@@ -12,6 +12,7 @@ export const FichasPersonagens: React.FC = () => {
   const { getActiveSession, addPersonagem, updatePersonagem, removePersonagem } = useSessionStore();
   const { abrirModal } = useDiceStore();
   const session = getActiveSession();
+  const perfil = session?.perfil || 'resiliencia';
 
   const personagens = session?.personagens || [];
 
@@ -168,9 +169,41 @@ export const FichasPersonagens: React.FC = () => {
                 ))}
               </div>
 
-              <div className="mt-3 rounded-xl border-2 border-amber-300 bg-amber-100/90 p-3 text-xs text-amber-950 dark:bg-stone-800 dark:border-stone-700 dark:text-amber-200">
-                <span className="font-black uppercase tracking-wider">Habilidade da Carta ({classeDef.habilidadeNome}):</span>{' '}
-                <span className="font-medium">{classeDef.habilidadeDescricao}</span>
+              {/* Painel Descritivo da Classe Selecionada */}
+              <div className="mt-3.5 rounded-2xl border-2 border-amber-400 bg-white p-4 shadow-sm dark:border-amber-700 dark:bg-stone-850 space-y-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-2 dark:border-stone-700">
+                  <div className="flex items-center gap-2">
+                    {getClasseIcone(classeDef.id)}
+                    <span className="font-black text-sm text-stone-900 dark:text-white">
+                      {classeDef.nome}
+                    </span>
+                    <span className="rounded-md border border-amber-300 bg-amber-100 px-2 py-0.5 text-[11px] font-black uppercase text-amber-950 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                      Atributo-Chave: {classeDef.atributoChave.toUpperCase()}
+                    </span>
+                  </div>
+                  <span className="text-xs font-bold text-amber-900 dark:text-amber-300">
+                    Papel: {classeDef.contribuicao}
+                  </span>
+                </div>
+
+                <p className="text-xs sm:text-sm font-semibold text-stone-800 dark:text-stone-200 leading-relaxed">
+                  {classeDef.descricao}
+                </p>
+
+                {/* Lore / Citação de acordo com o Perfil da Campanha */}
+                <div className="rounded-xl bg-amber-50/80 p-3 border border-amber-200 dark:bg-stone-900/70 dark:border-stone-700 text-xs">
+                  <span className="italic font-serif block text-stone-900 dark:text-amber-200 mb-1 font-medium">
+                    &ldquo;{perfil === 'visao' ? classeDef.fraseVisao : classeDef.fraseResiliencia}&rdquo;
+                  </span>
+                  <span className="text-stone-600 dark:text-stone-400 text-[11px] block leading-relaxed">
+                    {perfil === 'visao' ? classeDef.loreVisao : classeDef.loreResiliencia}
+                  </span>
+                </div>
+
+                <div className="rounded-xl border border-amber-300 bg-amber-100/80 p-2.5 text-xs text-amber-950 dark:bg-stone-800 dark:border-stone-700 dark:text-amber-200">
+                  <strong className="font-black uppercase tracking-wider">Habilidade Especial ({classeDef.habilidadeNome}):</strong>{' '}
+                  <span className="font-medium">{classeDef.habilidadeDescricao}</span>
+                </div>
               </div>
             </div>
 
@@ -316,6 +349,17 @@ export const FichasPersonagens: React.FC = () => {
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
+                  </div>
+
+                  {/* Descrição e Papel da Classe */}
+                  <div className="mb-3 rounded-xl border border-amber-200/90 bg-amber-50/60 p-3 text-xs dark:border-stone-800 dark:bg-stone-900/80">
+                    <p className="font-semibold text-stone-800 dark:text-stone-200 leading-relaxed mb-1.5">
+                      {def.descricao}
+                    </p>
+                    <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-bold text-amber-900 dark:text-amber-300 border-t border-amber-200/70 pt-1.5 dark:border-stone-800">
+                      <span>Papel: {def.contribuicao}</span>
+                      <span className="italic font-serif">&ldquo;{perfil === 'visao' ? def.fraseVisao : def.fraseResiliencia}&rdquo;</span>
+                    </div>
                   </div>
 
                   {/* Tabela de Atributos com Alto Contraste */}

@@ -21,11 +21,16 @@ export interface AttributeDefinition {
 export interface CharacterClassDefinition {
   id: CharacterClass;
   nome: string;
+  descricao: string;
   contribuicao: string;
   atributoChave: AttributeKey;
   habilidadeNome: string;
   habilidadeDescricao: string;
   icone: string;
+  fraseResiliencia?: string;
+  loreResiliencia?: string;
+  fraseVisao?: string;
+  loreVisao?: string;
 }
 
 export interface BusinessIndicators {

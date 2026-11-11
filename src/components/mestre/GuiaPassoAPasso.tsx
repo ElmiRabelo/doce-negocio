@@ -8,6 +8,7 @@ import { CalculadoraTia } from './CalculadoraTia';
 import { SorteadorCartas } from './SorteadorCartas';
 import { NARRATIVAS_JOGO } from '@/data/narrativas';
 import { CATALOGO_PASCOA } from '@/data/catalogo-pascoa';
+import { CLASSES_DOCE_NEGOCIO } from '@/data/classes';
 import { 
   CheckCircle2, 
   ChevronRight, 
@@ -15,7 +16,12 @@ import {
   Dices, 
   Sparkles, 
   Package, 
-  Building2
+  Building2,
+  Users,
+  Brain,
+  ChefHat,
+  Truck,
+  Shield
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -46,6 +52,19 @@ export const GuiaPassoAPasso: React.FC = () => {
     compras: false,
     cartas: false
   });
+
+  const [classeExpandidaGuia, setClasseExpandidaGuia] = useState<string | null>('estrategista');
+
+  const getClasseIconeGuia = (id: string) => {
+    switch (id) {
+      case 'estrategista': return <Brain className="h-5 w-5 text-indigo-700 dark:text-indigo-400" />;
+      case 'artesao': return <ChefHat className="h-5 w-5 text-amber-700 dark:text-amber-400" />;
+      case 'bardo': return <Sparkles className="h-5 w-5 text-pink-700 dark:text-pink-400" />;
+      case 'arquiteto': return <Truck className="h-5 w-5 text-cyan-700 dark:text-cyan-400" />;
+      case 'guardia': return <Shield className="h-5 w-5 text-emerald-700 dark:text-emerald-400" />;
+      default: return <Users className="h-5 w-5 text-amber-700" />;
+    }
+  };
 
   if (!session) {
     return (
@@ -343,6 +362,91 @@ export const GuiaPassoAPasso: React.FC = () => {
                 placeholder="Ex: Cacau & Encanto Confeitaria"
                 className="w-full rounded-xl border-2 border-amber-400 bg-white p-2.5 text-base font-black text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 shadow-sm"
               />
+            </div>
+
+            {/* Guia Rápido das 5 Classes para os Jogadores */}
+            <div className="rounded-2xl border-2 border-[#C2824D] bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-[#1B110A]">
+              <div className="flex items-center justify-between border-b-2 border-amber-200 pb-3 mb-3.5 dark:border-stone-800">
+                <div>
+                  <h3 className="font-black text-base text-stone-900 dark:text-white flex items-center gap-2">
+                    <Users className="h-5 w-5 text-amber-700 dark:text-amber-400" />
+                    As 5 Classes Oficiais do Jogo
+                  </h3>
+                  <p className="text-xs font-semibold text-stone-600 dark:text-amber-200/90 mt-0.5">
+                    Apresente o papel e a descrição de cada classe para que os jogadores façam suas escolhas.
+                  </p>
+                </div>
+              </div>
+
+              {/* Botões seletores de classe */}
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-5 mb-3.5">
+                {CLASSES_DOCE_NEGOCIO.map((c) => {
+                  const ativa = classeExpandidaGuia === c.id;
+                  return (
+                    <button
+                      key={c.id}
+                      type="button"
+                      onClick={() => setClasseExpandidaGuia(c.id)}
+                      className={`rounded-xl border-2 p-2.5 text-left transition-all ${
+                        ativa
+                          ? 'border-amber-600 bg-amber-100 shadow-md ring-2 ring-amber-500/30 dark:bg-amber-950/80'
+                          : 'border-stone-200 bg-stone-50 hover:bg-stone-100 dark:border-stone-800 dark:bg-stone-900'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 mb-1">
+                        {getClasseIconeGuia(c.id)}
+                        <span className="font-black text-xs text-stone-900 dark:text-white truncate">
+                          {c.nome}
+                        </span>
+                      </div>
+                      <span className="block text-[11px] font-bold text-amber-900 dark:text-amber-300">
+                        {c.atributoChave.toUpperCase()} · {c.contribuicao.split(',')[0]}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Detalhe da classe selecionada com descrição completa e lore */}
+              {(() => {
+                const c = CLASSES_DOCE_NEGOCIO.find((item) => item.id === (classeExpandidaGuia || 'estrategista'))!;
+                return (
+                  <div className="rounded-xl border-2 border-amber-300 bg-amber-50/70 p-4 dark:border-stone-700 dark:bg-stone-900/90 space-y-2.5 text-xs">
+                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-2 dark:border-stone-800">
+                      <div className="flex items-center gap-2">
+                        {getClasseIconeGuia(c.id)}
+                        <span className="font-black text-sm text-stone-900 dark:text-white">
+                          {c.nome}
+                        </span>
+                        <span className="rounded-md border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase text-amber-950 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                          Atributo-Chave: {c.atributoChave.toUpperCase()}
+                        </span>
+                      </div>
+                      <span className="font-bold text-amber-900 dark:text-amber-300">
+                        Papel: {c.contribuicao}
+                      </span>
+                    </div>
+
+                    <p className="text-stone-800 dark:text-stone-200 font-semibold text-xs sm:text-sm leading-relaxed">
+                      {c.descricao}
+                    </p>
+
+                    <div className="rounded-lg bg-white p-3 border border-amber-200 dark:bg-stone-800 dark:border-stone-700">
+                      <span className="italic font-serif block text-stone-900 dark:text-amber-200 font-medium mb-1">
+                        &ldquo;{perfil === 'visao' ? c.fraseVisao : c.fraseResiliencia}&rdquo;
+                      </span>
+                      <span className="text-[11px] text-stone-600 dark:text-stone-400 block leading-relaxed">
+                        {perfil === 'visao' ? c.loreVisao : c.loreResiliencia}
+                      </span>
+                    </div>
+
+                    <div className="rounded-lg border border-amber-300 bg-amber-100/70 p-2.5 text-amber-950 dark:bg-stone-800 dark:border-stone-700 dark:text-amber-200">
+                      <strong className="font-black uppercase tracking-wider">Habilidade Especial ({c.habilidadeNome}):</strong>{' '}
+                      <span className="font-medium">{c.habilidadeDescricao}</span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Rolagens Iniciais de REP e Caixa com Alto Contraste */}

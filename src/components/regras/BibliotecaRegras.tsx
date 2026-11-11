@@ -174,10 +174,27 @@ export const BibliotecaRegras: React.FC = () => {
                     Atributo: {c.atributoChave.toUpperCase()}
                   </span>
                 </div>
-                <p className="text-stone-700 dark:text-stone-300 font-semibold mb-3">
+
+                <p className="text-xs font-semibold text-stone-800 dark:text-stone-200 mb-2 leading-relaxed">
+                  {c.descricao}
+                </p>
+
+                <p className="text-stone-700 dark:text-stone-300 font-semibold mb-2.5 text-xs">
                   <strong className="text-stone-900 dark:text-white">Papel no Negócio:</strong> {c.contribuicao}
                 </p>
-                <div className="rounded-xl bg-amber-50 p-3 border-2 border-amber-300 text-stone-900 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-100">
+
+                <div className="mb-2.5 space-y-1.5 rounded-xl bg-amber-50/70 p-2.5 border border-amber-200 dark:bg-stone-900 dark:border-stone-800 text-[11px]">
+                  <div>
+                    <span className="font-bold text-amber-900 dark:text-amber-300">🌱 Resiliência: </span>
+                    <span className="italic font-serif">&ldquo;{c.fraseResiliencia}&rdquo;</span>
+                  </div>
+                  <div>
+                    <span className="font-bold text-amber-900 dark:text-amber-300">✨ Visão: </span>
+                    <span className="italic font-serif">&ldquo;{c.fraseVisao}&rdquo;</span>
+                  </div>
+                </div>
+
+                <div className="rounded-xl bg-amber-100/80 p-3 border-2 border-amber-300 text-stone-900 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-100">
                   <span className="font-black text-amber-950 dark:text-amber-200 block mb-1 uppercase tracking-wide">
                     Habilidade da Carta: {c.habilidadeNome}
                   </span>
