@@ -2,47 +2,59 @@
 
 :root {
   --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  color-scheme: light dark;
+
+  /* Paleta "Cacau & Confeitaria Fina" de Alto Contraste */
+  --cacau-950: #140b07;
+  --cacau-900: #1e100a;
+  --cacau-850: #26150d;
+  --cacau-800: #331c12;
+  --cacau-700: #472719;
+  --cacau-600: #633622;
   
-  /* Cores temáticas do Doce Negócio */
-  --cacau-950: #1a0f0a;
-  --cacau-900: #26150e;
-  --cacau-800: #381f14;
-  --cacau-700: #4a2b1c;
-  --cacau-600: #693d27;
-  
+  --caramelo-700: #92400e;
+  --caramelo-600: #b45309;
   --caramelo-500: #d97706;
   --caramelo-400: #f59e0b;
   --caramelo-300: #fbbf24;
   
-  --baunilha-50: #faf7f2;
-  --baunilha-100: #f4ece1;
-  --baunilha-200: #e8d9c5;
-  --baunilha-300: #d6be9f;
+  --creme-50: #faf6f0;
+  --creme-100: #f4ede2;
+  --creme-200: #e8dccb;
+  --creme-300: #d8c5ad;
   
-  --background: var(--baunilha-50);
-  --foreground: var(--cacau-950);
+  /* Cores estruturais para contraste excelente */
+  --background: #f2ece1;
+  --foreground: #1c1008;
+  --card-bg: #ffffff;
+  --card-border: #d4a373;
 }
 
 @theme inline {
   --color-cacau-950: var(--cacau-950);
   --color-cacau-900: var(--cacau-900);
+  --color-cacau-850: var(--cacau-850);
   --color-cacau-800: var(--cacau-800);
   --color-cacau-700: var(--cacau-700);
   --color-cacau-600: var(--cacau-600);
   
+  --color-caramelo-700: var(--caramelo-700);
+  --color-caramelo-600: var(--caramelo-600);
   --color-caramelo-500: var(--caramelo-500);
   --color-caramelo-400: var(--caramelo-400);
   --color-caramelo-300: var(--caramelo-300);
   
-  --color-baunilha-50: var(--baunilha-50);
-  --color-baunilha-100: var(--baunilha-100);
-  --color-baunilha-200: var(--baunilha-200);
-  --color-baunilha-300: var(--baunilha-300);
+  --color-creme-50: var(--creme-50);
+  --color-creme-100: var(--creme-100);
+  --color-creme-200: var(--creme-200);
+  --color-creme-300: var(--creme-300);
 }
 
 .dark {
-  --background: #140b07;
-  --foreground: #f4ece1;
+  --background: #110905;
+  --foreground: #fcf9f5;
+  --card-bg: #1c110b;
+  --card-border: #523120;
 }
 
 body {
@@ -60,8 +72,27 @@ dialog:modal {
 dialog::backdrop {
   overflow: hidden;
   overscroll-behavior: contain;
-  background: rgba(18, 9, 5, 0.75);
-  backdrop-filter: blur(4px);
+  background: rgba(10, 5, 2, 0.82);
+  backdrop-filter: blur(5px);
+}
+
+/* Scrollbar com contraste e estilo temático */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ecd9c6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9a6344;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #784428;
 }
 
 /* Estilo para impressões de fichas de RPG */

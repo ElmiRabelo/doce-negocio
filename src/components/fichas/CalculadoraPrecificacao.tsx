@@ -14,8 +14,8 @@ export const CalculadoraPrecificacao: React.FC = () => {
   const precificacoes = session?.precificacoes || [];
 
   const [produtoSelecionado, setProdutoSelecionado] = useState<ProdutoPascoa>(CATALOGO_PASCOA[0]);
-  const [rendimentoLote, setRendimentoLote] = useState<number>(5); // ex: 5 unidades
-  const [lucroDesejado, setLucroDesejado] = useState<number>(15.0); // ex: R$ 15 de lucro por unidade
+  const [rendimentoLote, setRendimentoLote] = useState<number>(5);
+  const [lucroDesejado, setLucroDesejado] = useState<number>(15.0);
 
   // Lista de ingredientes do lote
   const [ingredientes, setIngredientes] = useState<InsumoUsado[]>([
@@ -25,9 +25,9 @@ export const CalculadoraPrecificacao: React.FC = () => {
       precoCompra: 10.0,
       qtdCompra: 100,
       unidadeCompra: 'g',
-      qtdUsada: 950, // 5 ovos de 190g = 950g
+      qtdUsada: 950,
       unidadeUsada: 'g',
-      custoCalculado: (10.0 * 950) / 100 // R$ 95.00
+      custoCalculado: (10.0 * 950) / 100
     }
   ]);
 
@@ -46,7 +46,7 @@ export const CalculadoraPrecificacao: React.FC = () => {
       nome: 'Fita de Cetim (10 m)',
       precoTotalPacote: 23.00,
       qtdPacote: 10,
-      qtdUsada: 2, // 2 metros
+      qtdUsada: 2,
       custoCalculado: Math.round(((23.00 * 2) / 10) * 100) / 100
     }
   ]);
@@ -60,7 +60,6 @@ export const CalculadoraPrecificacao: React.FC = () => {
 
   const handleMudarProduto = (prod: ProdutoPascoa) => {
     setProdutoSelecionado(prod);
-    // Ajusta sugestão de gramagem padrão para chocolate
     const qtdChocTotal = prod.chocolateG * rendimentoLote;
     setIngredientes([
       {
@@ -77,7 +76,7 @@ export const CalculadoraPrecificacao: React.FC = () => {
   };
 
   const handleAddIngrediente = () => {
-    const item = CATALOGO_INSUMOS_SIMULACAO[3]; // Leite condensado default
+    const item = CATALOGO_INSUMOS_SIMULACAO[3];
     const novo: InsumoUsado = {
       id: 'ing_' + Date.now(),
       nome: item.nome,
@@ -125,56 +124,56 @@ export const CalculadoraPrecificacao: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner */}
-      <div className="rounded-2xl border-2 border-amber-300 bg-white p-6 shadow-sm dark:border-amber-700/60 dark:bg-stone-900">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-amber-200 pb-4 dark:border-stone-800">
-          <div className="flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600 text-white shadow">
+      {/* Top Banner com Alto Contraste */}
+      <div className="rounded-2xl border-2 border-[#C2824D] bg-white p-6 shadow-md dark:border-amber-700 dark:bg-[#1B110A] text-stone-900 dark:text-stone-100">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-amber-200 pb-4 dark:border-stone-800">
+          <div className="flex items-center gap-3.5">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-600 to-amber-800 text-white shadow-md border border-amber-400/40">
               <Calculator className="h-6 w-6" />
             </span>
             <div>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+              <h2 className="text-2xl font-black text-stone-900 dark:text-white">
                 Ficha de Precificação Interativa
               </h2>
-              <p className="text-xs text-stone-500">
+              <p className="text-xs font-semibold text-stone-600 dark:text-amber-200/90 mt-0.5">
                 Regra oficial do manual: calcule o custo proporcional da parte usada, divida pelo rendimento e defina a margem de lucro.
               </p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-amber-300 bg-amber-50 p-2 text-xs font-semibold text-amber-900 dark:border-stone-700 dark:bg-stone-800 dark:text-amber-300">
+          <div className="rounded-xl border-2 border-amber-400 bg-amber-50 px-3 py-1.5 text-xs font-black text-amber-950 dark:border-stone-700 dark:bg-stone-800 dark:text-amber-200">
             Fórmula: Custo = (Preço Pacote × Qtd Usada) ÷ Qtd Comprada
           </div>
         </div>
 
         {/* Escolha do Produto do Catálogo de Páscoa */}
         <div className="pt-4">
-          <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
+          <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-2.5">
             1. Selecione o Produto do Catálogo de Páscoa:
           </label>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-4">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
             {CATALOGO_PASCOA.map((prod) => (
               <button
                 key={prod.id}
                 type="button"
                 onClick={() => handleMudarProduto(prod)}
-                className={`rounded-xl border p-3 text-left transition ${
+                className={`rounded-2xl border-2 p-3.5 text-left transition-all ${
                   produtoSelecionado.id === prod.id
-                    ? 'border-amber-600 bg-amber-100/90 shadow-sm dark:bg-amber-950/60'
-                    : 'border-amber-200 bg-white hover:bg-amber-50 dark:border-stone-700 dark:bg-stone-800'
+                    ? 'border-amber-600 bg-amber-100/90 shadow-md ring-2 ring-amber-500/30 dark:bg-amber-950/80'
+                    : 'border-stone-300 bg-white hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-800'
                 }`}
               >
-                <span className="block font-bold text-xs text-stone-900 dark:text-stone-100">
+                <span className="block font-black text-sm text-stone-900 dark:text-white">
                   {prod.nome}
                 </span>
-                <span className="block text-[11px] text-stone-500 mt-1">
+                <span className="block text-xs font-bold text-amber-900 dark:text-amber-300 mt-1">
                   {prod.chocolateG}g chocolate {prod.recheioG > 0 && `+ ${prod.recheioG}g recheio`}
                 </span>
               </button>
             ))}
           </div>
 
-          <p className="mt-2 text-xs italic text-stone-500">
+          <p className="mt-2.5 text-xs font-semibold text-stone-600 dark:text-stone-400">
             {produtoSelecionado.descricao} · {produtoSelecionado.dica}
           </p>
         </div>
@@ -182,109 +181,109 @@ export const CalculadoraPrecificacao: React.FC = () => {
 
       {/* Tabela de Ingredientes e Embalagens Usados */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-5">
           {/* Ingredientes Usados */}
-          <div className="rounded-2xl border-2 border-amber-300 bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-stone-900">
-            <div className="flex items-center justify-between mb-3 border-b pb-2">
-              <h3 className="font-bold text-sm text-stone-800 dark:text-stone-200 flex items-center gap-1.5">
-                <BookOpen className="h-4 w-4 text-amber-600" />
+          <div className="rounded-2xl border-2 border-[#C2824D] bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-[#1B110A]">
+            <div className="flex items-center justify-between mb-3.5 border-b-2 border-amber-200 pb-2.5 dark:border-stone-800">
+              <h3 className="font-black text-sm text-stone-900 dark:text-white flex items-center gap-2">
+                <BookOpen className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                 2. Ingredientes Usados no Lote ({rendimentoLote} unidades)
               </h3>
               <button
                 onClick={handleAddIngrediente}
-                className="flex items-center gap-1 text-xs font-bold text-amber-700 hover:underline"
+                className="flex items-center gap-1 text-xs font-black uppercase tracking-wider text-amber-800 hover:text-amber-600 dark:text-amber-300"
               >
-                <Plus className="h-3.5 w-3.5" /> Adicionar Ingrediente
+                <Plus className="h-4 w-4" /> Adicionar Ingrediente
               </button>
             </div>
 
-            <div className="space-y-2 text-xs">
+            <div className="space-y-2.5 text-xs">
               {ingredientes.map((ing) => (
                 <div
                   key={ing.id}
-                  className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-stone-200 bg-stone-50/60 p-2.5 dark:border-stone-800 dark:bg-stone-800/40"
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-amber-200 bg-amber-50/50 p-3 dark:border-stone-800 dark:bg-stone-900 font-semibold"
                 >
-                  <div className="min-w-[140px]">
-                    <span className="font-bold block text-stone-800 dark:text-stone-200">{ing.nome}</span>
-                    <span className="text-[10px] text-stone-500">
+                  <div className="min-w-[150px]">
+                    <span className="font-black text-stone-900 dark:text-white block text-sm">{ing.nome}</span>
+                    <span className="text-[11px] font-bold text-amber-900 dark:text-amber-300">
                       Pacote: R$ {ing.precoCompra.toFixed(2)} por {ing.qtdCompra} {ing.unidadeCompra}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-stone-500">Qtd usada:</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-stone-700 dark:text-stone-300 font-bold">Qtd usada:</span>
                     <input
                       type="number"
                       min="1"
                       value={ing.qtdUsada}
                       onChange={(e) => handleUpdateIngrediente(ing.id, parseFloat(e.target.value) || 0)}
-                      className="w-20 rounded border border-amber-300 p-1 text-center font-bold"
+                      className="w-20 rounded-lg border-2 border-amber-300 bg-white p-1 text-center font-black text-stone-900 dark:bg-stone-800 dark:text-white"
                     />
-                    <span className="text-stone-500">{ing.unidadeUsada}</span>
+                    <span className="text-stone-700 dark:text-stone-300 font-bold">{ing.unidadeUsada}</span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-amber-800 dark:text-amber-300">
+                  <div className="flex items-center gap-2.5">
+                    <span className="font-black text-sm text-amber-950 dark:text-amber-300">
                       R$ {ing.custoCalculado.toFixed(2)}
                     </span>
                     <button
                       onClick={() => handleRemoveIngrediente(ing.id)}
-                      className="text-stone-400 hover:text-rose-600 p-0.5"
+                      className="text-stone-400 hover:text-rose-600 p-1 font-bold text-sm"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      ✕
                     </button>
                   </div>
                 </div>
               ))}
 
-              <div className="pt-2 text-right font-bold text-stone-700 dark:text-stone-300">
-                Subtotal Ingredientes: R$ {custoTotalIngredientes.toFixed(2)}
+              <div className="pt-2 text-right font-black text-sm text-stone-900 dark:text-white">
+                Subtotal Ingredientes: <span className="text-amber-900 dark:text-amber-300">R$ {custoTotalIngredientes.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
           {/* Embalagens Usadas */}
-          <div className="rounded-2xl border-2 border-amber-300 bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-stone-900">
-            <h3 className="font-bold text-sm text-stone-800 dark:text-stone-200 mb-3 border-b pb-2">
+          <div className="rounded-2xl border-2 border-[#C2824D] bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-[#1B110A]">
+            <h3 className="font-black text-sm text-stone-900 dark:text-white mb-3.5 border-b-2 border-amber-200 pb-2.5 dark:border-stone-800">
               3. Embalagens e Materiais do Lote
             </h3>
 
-            <div className="space-y-2 text-xs">
+            <div className="space-y-2.5 text-xs font-semibold">
               {embalagens.map((emb) => (
                 <div
                   key={emb.id}
-                  className="flex items-center justify-between rounded-xl border border-stone-200 bg-stone-50/60 p-2.5 dark:border-stone-800 dark:bg-stone-800/40"
+                  className="flex items-center justify-between rounded-xl border-2 border-stone-200 bg-stone-50 p-3 dark:border-stone-800 dark:bg-stone-900"
                 >
                   <div>
-                    <span className="font-bold block text-stone-800 dark:text-stone-200">{emb.nome}</span>
-                    <span className="text-[10px] text-stone-500">
-                      R$ {emb.precoTotalPacote.toFixed(2)} ({emb.qtdPacote} un.) · Usadas: {emb.qtdUsada} un.
+                    <span className="font-black text-sm text-stone-900 dark:text-white block">{emb.nome}</span>
+                    <span className="text-[11px] font-bold text-stone-600 dark:text-stone-400">
+                      R$ {emb.precoTotalPacote.toFixed(2)} ({emb.qtdPacote} un.) · Usadas no lote: {emb.qtdUsada} un.
                     </span>
                   </div>
-                  <span className="font-bold text-amber-800 dark:text-amber-300">
+                  <span className="font-black text-sm text-amber-950 dark:text-amber-300">
                     R$ {emb.custoCalculado.toFixed(2)}
                   </span>
                 </div>
               ))}
 
-              <div className="pt-2 text-right font-bold text-stone-700 dark:text-stone-300">
-                Subtotal Embalagens: R$ {custoTotalEmbalagens.toFixed(2)}
+              <div className="pt-2 text-right font-black text-sm text-stone-900 dark:text-white">
+                Subtotal Embalagens: <span className="text-amber-900 dark:text-amber-300">R$ {custoTotalEmbalagens.toFixed(2)}</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Painel de Fechamento do Preço */}
-        <div className="rounded-2xl border-2 border-amber-400 bg-amber-50/80 p-5 shadow-md dark:border-amber-700 dark:bg-stone-900 flex flex-col justify-between">
+        {/* Painel de Fechamento do Preço com Alto Contraste */}
+        <div className="rounded-2xl border-2 border-amber-500 bg-amber-50/80 p-5 shadow-lg dark:border-amber-700 dark:bg-[#1B110A] flex flex-col justify-between">
           <div>
-            <h3 className="font-bold text-base text-stone-900 dark:text-stone-100 mb-3 flex items-center gap-2 border-b border-amber-200 pb-2">
-              <TrendingUp className="h-5 w-5 text-amber-600" />
+            <h3 className="font-black text-base text-stone-900 dark:text-white mb-3 flex items-center gap-2 border-b-2 border-amber-200 pb-2.5 dark:border-stone-800">
+              <TrendingUp className="h-5 w-5 text-amber-700 dark:text-amber-400" />
               Resultado da Precificação
             </h3>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3.5 text-xs font-semibold">
               <div>
-                <label className="block font-semibold mb-1 text-stone-700 dark:text-stone-300">
+                <label className="block font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                   Rendimento do Lote (Unidades de Venda):
                 </label>
                 <input
@@ -292,23 +291,23 @@ export const CalculadoraPrecificacao: React.FC = () => {
                   min="1"
                   value={rendimentoLote}
                   onChange={(e) => setRendimentoLote(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full rounded-lg border border-amber-300 bg-white p-2 font-bold text-center text-sm"
+                  className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 font-black text-center text-base text-stone-900 dark:bg-stone-800 dark:text-white"
                 />
               </div>
 
-              <div className="rounded-xl bg-white/80 p-3 dark:bg-stone-800/80 space-y-1.5 border border-amber-200">
-                <div className="flex justify-between text-stone-600">
-                  <span>Custo Total do Lote:</span>
-                  <span className="font-bold text-stone-800 dark:text-stone-200">R$ {custoTotalLote.toFixed(2)}</span>
+              <div className="rounded-2xl bg-white p-4 dark:bg-stone-900 space-y-2 border-2 border-amber-300 shadow-sm">
+                <div className="flex justify-between text-stone-700 dark:text-stone-300">
+                  <span className="font-bold">Custo Total do Lote:</span>
+                  <span className="font-black text-stone-900 dark:text-white text-sm">R$ {custoTotalLote.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-stone-600">
-                  <span>Custo Unitário de Produção:</span>
-                  <span className="font-bold text-stone-900 dark:text-stone-100">R$ {custoUnitario.toFixed(2)}</span>
+                <div className="flex justify-between text-stone-700 dark:text-stone-300">
+                  <span className="font-bold">Custo Unitário de Produção:</span>
+                  <span className="font-black text-stone-900 dark:text-white text-sm">R$ {custoUnitario.toFixed(2)}</span>
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold mb-1 text-stone-700 dark:text-stone-300">
+                <label className="block font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                   Lucro Desejado por Unidade (R$):
                 </label>
                 <input
@@ -316,28 +315,28 @@ export const CalculadoraPrecificacao: React.FC = () => {
                   step="0.5"
                   value={lucroDesejado}
                   onChange={(e) => setLucroDesejado(Math.max(0, parseFloat(e.target.value) || 0))}
-                  className="w-full rounded-lg border border-amber-300 bg-white p-2 font-bold text-center text-sm"
+                  className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 font-black text-center text-base text-stone-900 dark:bg-stone-800 dark:text-white"
                 />
               </div>
 
-              <div className="rounded-xl bg-emerald-100/70 p-4 text-center border-2 border-emerald-400 text-emerald-950 dark:bg-emerald-950/40 dark:text-emerald-200">
-                <span className="text-xs font-semibold block uppercase tracking-wider">
+              <div className="rounded-2xl bg-emerald-100 p-4 text-center border-2 border-emerald-500 text-emerald-950 dark:bg-emerald-950/80 dark:text-emerald-100 shadow-sm">
+                <span className="text-xs font-black block uppercase tracking-wider text-emerald-900 dark:text-emerald-300">
                   Preço de Venda Sugerido
                 </span>
-                <span className="text-3xl font-black block my-1">
+                <span className="text-4xl font-black block my-1 text-emerald-800 dark:text-emerald-200">
                   R$ {precoVendaFinal.toFixed(2)}
                 </span>
-                <span className="text-xs font-medium block">
+                <span className="text-xs font-black block text-emerald-800 dark:text-emerald-300">
                   Margem de Lucro: {margemLucro}% sobre o preço
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-amber-200">
+          <div className="mt-5 pt-3 border-t-2 border-amber-200 dark:border-stone-800">
             <button
               onClick={handleSalvarFichaPrecificacao}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-600 py-3 font-bold text-white shadow hover:bg-amber-700 transition"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-700 py-3 font-black uppercase tracking-wider text-white shadow-md hover:bg-amber-600 transition text-xs"
             >
               <CheckCircle2 className="h-4 w-4" />
               <span>Salvar Ficha do {produtoSelecionado.nome}</span>
@@ -348,32 +347,32 @@ export const CalculadoraPrecificacao: React.FC = () => {
 
       {/* Fichas Salvas nesta Sessão */}
       {precificacoes.length > 0 && (
-        <div className="rounded-2xl border-2 border-amber-300 bg-white p-6 shadow-sm dark:border-stone-800 dark:bg-stone-900">
-          <h3 className="text-base font-bold text-stone-900 dark:text-stone-100 mb-3 flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-amber-600" />
+        <div className="rounded-2xl border-2 border-[#C2824D] bg-white p-6 shadow-md dark:border-stone-800 dark:bg-[#1B110A]">
+          <h3 className="text-base font-black text-stone-900 dark:text-white mb-3.5 flex items-center gap-2 border-b-2 border-amber-200 pb-2.5 dark:border-stone-800">
+            <Sparkles className="h-5 w-5 text-amber-700 dark:text-amber-400" />
             Fichas de Precificação Salvas na Sessão ({precificacoes.length})
           </h3>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
             {precificacoes.map((p) => (
               <div
                 key={p.id}
-                className="flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50/50 p-3.5 dark:border-stone-800 dark:bg-stone-800/40"
+                className="flex items-center justify-between rounded-xl border-2 border-amber-200 bg-amber-50/50 p-4 dark:border-stone-800 dark:bg-stone-900"
               >
                 <div>
-                  <h4 className="font-bold text-sm text-stone-900 dark:text-stone-100">{p.produtoNome}</h4>
-                  <p className="text-xs text-stone-500">
+                  <h4 className="font-black text-sm text-stone-900 dark:text-white">{p.produtoNome}</h4>
+                  <p className="text-xs font-bold text-stone-600 dark:text-stone-300 mt-0.5">
                     Lote de {p.rendimentoLote} un. · Custo un.: R$ {p.custoUnitario.toFixed(2)} · Lucro: R$ {p.lucroDesejadoUnitario.toFixed(2)}
                   </p>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-lg font-black text-emerald-700 dark:text-emerald-400">
+                  <span className="text-xl font-black text-emerald-800 dark:text-emerald-300">
                     R$ {p.precoVendaSugerido.toFixed(2)}
                   </span>
                   <button
                     onClick={() => removerPrecificacao(p.id)}
-                    className="text-stone-400 hover:text-rose-600 p-1"
+                    className="text-stone-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50"
                     title="Excluir"
                   >
                     <Trash2 className="h-4 w-4" />

@@ -8,22 +8,13 @@ import { CalculadoraTia } from './CalculadoraTia';
 import { SorteadorCartas } from './SorteadorCartas';
 import { NARRATIVAS_JOGO } from '@/data/narrativas';
 import { CATALOGO_PASCOA } from '@/data/catalogo-pascoa';
-import { CLASSES_DOCE_NEGOCIO } from '@/data/classes';
-import { ATRIBUTOS_REGRAS, REGRAS_TESTE } from '@/data/regras-base';
 import { 
   CheckCircle2, 
   ChevronRight, 
   ChevronLeft, 
   Dices, 
   Sparkles, 
-  BookOpen, 
   Package, 
-  Users, 
-  ShoppingCart, 
-  Calculator, 
-  Layers, 
-  Flame, 
-  CheckSquare,
   Building2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -58,7 +49,7 @@ export const GuiaPassoAPasso: React.FC = () => {
 
   if (!session) {
     return (
-      <div className="p-12 text-center text-stone-500">
+      <div className="p-12 text-center text-stone-700 dark:text-stone-300 font-bold">
         Nenhuma sessão ativa. Crie ou selecione uma sessão no topo da página.
       </div>
     );
@@ -86,14 +77,12 @@ export const GuiaPassoAPasso: React.FC = () => {
 
   const handleRolarCaixaInicial = () => {
     if (perfil === 'visao') {
-      // 7d6 descarta o menor, soma os 6 e multiplica por R$100
       const rolagens = Array.from({ length: 7 }, () => Math.floor(Math.random() * 6) + 1);
       const menor = Math.min(...rolagens);
       const soma = rolagens.reduce((a, b) => a + b, 0) - menor;
       const totalCaixa = soma * 100;
       updateIndicadores({ caixa: totalCaixa });
     } else {
-      // 6d4 descarta o menor, soma os 5 e multiplica por R$100
       const rolagens = Array.from({ length: 6 }, () => Math.floor(Math.random() * 4) + 1);
       const menor = Math.min(...rolagens);
       const soma = rolagens.reduce((a, b) => a + b, 0) - menor;
@@ -104,7 +93,6 @@ export const GuiaPassoAPasso: React.FC = () => {
   };
 
   const handleRolarKitInicial = () => {
-    // Geladeira 1d6
     const dGeladeira = Math.floor(Math.random() * 6) + 1;
     let estadoGeladeira = '';
     if (perfil === 'visao') {
@@ -119,7 +107,6 @@ export const GuiaPassoAPasso: React.FC = () => {
       else estadoGeladeira = 'Bom estado';
     }
 
-    // Fogão 1d6
     const dFogao = Math.floor(Math.random() * 6) + 1;
     let bocas = 4;
     if (perfil === 'visao') {
@@ -128,7 +115,6 @@ export const GuiaPassoAPasso: React.FC = () => {
       bocas = dFogao <= 2 ? 4 : dFogao <= 4 ? 5 : 6;
     }
 
-    // Panelas
     let qtdPanelas = 1;
     if (perfil === 'visao') {
       const d1 = Math.floor(Math.random() * 4) + 1;
@@ -166,7 +152,7 @@ export const GuiaPassoAPasso: React.FC = () => {
       novaLista = novaLista.filter((p) => p !== prodNome);
     } else {
       if (novaLista.length >= 2) {
-        novaLista.shift(); // remove o primeiro se já tiver 2
+        novaLista.shift();
       }
       novaLista.push(prodNome);
     }
@@ -175,14 +161,16 @@ export const GuiaPassoAPasso: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Stepper Horizontal */}
-      <div className="rounded-2xl border-2 border-amber-300 bg-white p-4 shadow-sm dark:border-amber-700/60 dark:bg-stone-900">
-        <div className="flex items-center justify-between mb-3 text-xs font-semibold text-stone-500">
-          <span>Passo a Passo Guiado do Mestre</span>
-          <span>Etapa {etapaAtual} de 9</span>
+      {/* Stepper Horizontal com Alto Contraste */}
+      <div className="rounded-2xl border-2 border-[#C2824D] bg-white p-4 shadow-md dark:border-amber-700/80 dark:bg-[#1C120B]">
+        <div className="flex items-center justify-between mb-3 text-xs font-black uppercase tracking-wider text-[#4A2D1B] dark:text-amber-200">
+          <span>Roteiro Oficial do Mestre</span>
+          <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-amber-900 border border-amber-300 dark:bg-amber-950 dark:text-amber-200 dark:border-amber-700">
+            Etapa {etapaAtual} de 9
+          </span>
         </div>
 
-        <div className="flex items-center gap-1 overflow-x-auto pb-2">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2">
           {ETAPAS_TITULOS.map((titulo, idx) => {
             const numero = idx + 1;
             const isAtiva = etapaAtual === numero;
@@ -192,12 +180,12 @@ export const GuiaPassoAPasso: React.FC = () => {
               <button
                 key={numero}
                 onClick={() => setEtapa(numero)}
-                className={`flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+                className={`flex items-center gap-1.5 whitespace-nowrap rounded-xl px-3.5 py-2 text-xs font-black transition-all ${
                   isAtiva
-                    ? 'bg-amber-600 text-white shadow-md'
+                    ? 'bg-amber-700 text-white shadow-md border-2 border-amber-500 scale-105'
                     : isPassada
-                    ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-200'
-                    : 'bg-stone-100 text-stone-500 hover:bg-stone-200 dark:bg-stone-800'
+                    ? 'bg-amber-100 text-amber-950 border border-amber-300/80 dark:bg-amber-950/80 dark:text-amber-100 dark:border-amber-800'
+                    : 'bg-[#EFE8DC] text-[#472E1E] hover:bg-[#E3D9C8] border border-stone-300 dark:bg-stone-800 dark:text-stone-300 dark:border-stone-700'
                 }`}
               >
                 <span>{numero}.</span>
@@ -208,25 +196,27 @@ export const GuiaPassoAPasso: React.FC = () => {
         </div>
       </div>
 
-      {/* CONTEÚDO DE CADA ETAPA */}
-      <div className="rounded-2xl border-2 border-amber-300 bg-white p-6 shadow-md dark:border-amber-700/60 dark:bg-stone-900">
+      {/* CONTEÚDO PRINCIPAL DA ETAPA */}
+      <div className="rounded-2xl border-2 border-[#B97741] bg-white p-6 shadow-lg dark:border-amber-700 dark:bg-[#1B110A] text-[#1C1008] dark:text-[#F8F5EE]">
         {/* ===================== ETAPA 1 ===================== */}
         {etapaAtual === 1 && (
-          <div className="space-y-4">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 1 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+          <div className="space-y-5">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 1 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Antes de Chamar os Jogadores
               </h2>
-              <p className="text-xs text-stone-500 mt-1">
-                Prepare a mesa e confira os materiais necessários para a imersão na chocolateria.
+              <p className="text-sm font-medium text-[#4D3323] dark:text-amber-200/90 mt-1">
+                Prepare a mesa e confira os materiais necessários para a imersão na chocolateria artesanal.
               </p>
             </div>
 
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {[
                 { id: 'fichas', texto: 'Copie ou abra as Fichas de Personagem por jogador, a Ficha do Negócio e duas Fichas de Precificação.' },
-                { id: 'dados', texto: 'Separe os dados d4, d6 e d20 (também d10 e d12 se desejar) ou use o rolador de dados integrado no app.' },
+                { id: 'dados', texto: 'Separe os dados d4, d6 e d20 (também d10 e d12 se desejar) ou use o rolador de dados integrado no app (tecla D).' },
                 { id: 'catalogo', texto: 'Deixe à mão o Catálogo de Páscoa com os 4 produtos e as receitas-base que a equipe vai consultar.' },
                 { id: 'compras', texto: 'Confira a tabela de Catálogo de Compras com os utensílios, embalagens e preços de insumos.' },
                 { id: 'cartas', texto: 'Abra o Baralho Virtual com as cartas de Demanda e o Monte Misto (Obstáculos e Vantagens).' }
@@ -234,27 +224,27 @@ export const GuiaPassoAPasso: React.FC = () => {
                 <label
                   key={item.id}
                   onClick={() => toggleChecklist(item.id)}
-                  className={`flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition ${
+                  className={`flex items-start gap-3.5 rounded-xl border-2 p-3.5 cursor-pointer transition ${
                     checklist1[item.id]
-                      ? 'border-emerald-300 bg-emerald-50/50 dark:border-emerald-800 dark:bg-emerald-950/20'
-                      : 'border-stone-200 bg-stone-50/50 hover:bg-stone-100 dark:border-stone-800 dark:bg-stone-800/40'
+                      ? 'border-emerald-500 bg-emerald-50/80 dark:border-emerald-700 dark:bg-emerald-950/40'
+                      : 'border-[#DFCBB7] bg-[#FCFAF6] hover:bg-[#F7F1E6] dark:border-stone-800 dark:bg-[#251710]'
                   }`}
                 >
                   <input
                     type="checkbox"
                     checked={checklist1[item.id] || false}
                     onChange={() => {}}
-                    className="h-4 w-4 rounded accent-emerald-600 cursor-pointer mt-0.5"
+                    className="h-5 w-5 rounded accent-emerald-600 cursor-pointer mt-0.5"
                   />
-                  <span className={`text-xs ${checklist1[item.id] ? 'line-through text-stone-500' : 'text-stone-800 dark:text-stone-200'}`}>
+                  <span className={`text-sm font-semibold leading-relaxed ${checklist1[item.id] ? 'line-through text-stone-500 dark:text-stone-400' : 'text-[#1F120A] dark:text-[#F7F3EB]'}`}>
                     {item.texto}
                   </span>
                 </label>
               ))}
             </div>
 
-            <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-3 text-xs text-amber-950 dark:border-stone-800 dark:bg-stone-800 dark:text-amber-200">
-              💡 <strong>Regra de Bolso para o Mestre:</strong> Descreva a situação → Pergunte o que fazem e como → Peça teste de 1d20 + modificador se houver incerteza (CD padrão 15) → Aplique a consequência → Atualize o caixa e a ficha.
+            <div className="rounded-xl border-2 border-amber-500/80 bg-amber-50 p-4 text-xs font-medium text-amber-950 dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-100">
+              💡 <strong className="font-black text-amber-900 dark:text-amber-300">Regra de Bolso para o Mestre:</strong> Descreva a situação → Pergunte o que fazem e como → Peça teste de 1d20 + modificador se houver incerteza (CD padrão 15) → Aplique a consequência → Atualize o caixa e a ficha.
             </div>
           </div>
         )}
@@ -262,53 +252,55 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 2 ===================== */}
         {etapaAtual === 2 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 2 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 2 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Apresente o Jogo, Escolha o Perfil e Leia a Abertura
               </h2>
             </div>
 
             <FalaDeApoio titulo="Apresente o Jogo" origem="Manual, p. 37">
-              {NARRATIVAS_JOGO.aberturaComum.slice(0, 310)}... Vocês são um grupo de amigos que se conheceram na Universidade e decidiram iniciar um pequeno negócio de chocolates artesanais em Ilhéus. Cada um vai interpretar uma pessoa desse grupo. Eu descrevo o que acontece e vocês decidem como querem agir!
+              Vocês são um grupo de amigos que se conheceram na Universidade e decidiram iniciar um pequeno negócio de chocolates artesanais em Ilhéus. Cada um vai interpretar uma pessoa desse grupo. Eu descrevo o que acontece e interpreto quem vocês encontram. Vocês conversam entre si, escolhem o que fazer e me contam como querem agir. Se o resultado for incerto, vamos usar o dado para descobrir o que acontece!
             </FalaDeApoio>
 
-            <div className="rounded-xl border border-amber-300 bg-amber-50/70 p-4 dark:border-stone-800 dark:bg-stone-800">
-              <h4 className="font-bold text-xs uppercase tracking-wider text-amber-900 dark:text-amber-200 mb-2">
+            <div className="rounded-2xl border-2 border-amber-500/80 bg-[#FFFDF8] p-5 dark:border-stone-800 dark:bg-[#23150D]">
+              <h4 className="font-black text-xs uppercase tracking-wider text-amber-950 dark:text-amber-200 mb-3">
                 Defina o Perfil da Equipe:
               </h4>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <button
                   type="button"
                   onClick={() => handleMudarPerfil('resiliencia')}
-                  className={`rounded-xl border p-3 text-left transition ${
+                  className={`rounded-2xl border-2 p-4 text-left transition-all ${
                     perfil === 'resiliencia'
-                      ? 'border-amber-600 bg-amber-100 shadow-sm dark:bg-amber-950'
-                      : 'border-stone-200 bg-white hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900'
+                      ? 'border-emerald-600 bg-emerald-50/90 shadow-md dark:bg-emerald-950/80 ring-2 ring-emerald-500/30'
+                      : 'border-stone-300 bg-white hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-900'
                   }`}
                 >
-                  <span className="font-bold block text-sm text-stone-900 dark:text-stone-100">
+                  <span className="font-black block text-base text-stone-900 dark:text-white">
                     🌱 Perfil Resiliência
                   </span>
-                  <span className="text-xs text-stone-600 dark:text-stone-400 mt-1 block">
-                    O negócio nasce da necessidade. Orçamento apertado (Caixa 6d4 descartando menor x R$100), 1d6 de Reputação inicial e equipamentos mais rústicos.
+                  <span className="text-xs font-medium text-stone-700 dark:text-stone-300 mt-1.5 block leading-relaxed">
+                    O negócio nasce da necessidade. Orçamento enxuto (Caixa 6d4 descartando menor × R$100), 1d6 de Reputação inicial e equipamentos mais rústicos.
                   </span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => handleMudarPerfil('visao')}
-                  className={`rounded-xl border p-3 text-left transition ${
+                  className={`rounded-2xl border-2 p-4 text-left transition-all ${
                     perfil === 'visao'
-                      ? 'border-amber-600 bg-amber-100 shadow-sm dark:bg-amber-950'
-                      : 'border-stone-200 bg-white hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-900'
+                      ? 'border-amber-600 bg-amber-50/90 shadow-md dark:bg-amber-950/80 ring-2 ring-amber-500/30'
+                      : 'border-stone-300 bg-white hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-900'
                   }`}
                 >
-                  <span className="font-bold block text-sm text-stone-900 dark:text-stone-100">
+                  <span className="font-black block text-base text-stone-900 dark:text-white">
                     ✨ Perfil Visão
                   </span>
-                  <span className="text-xs text-stone-600 dark:text-stone-400 mt-1 block">
-                    Apoio da família e foco em nicho nobre. Mais recursos iniciais (Caixa 7d6 descartando menor x R$100), 2d6 de Reputação e equipamentos em melhor estado.
+                  <span className="text-xs font-medium text-stone-700 dark:text-stone-300 mt-1.5 block leading-relaxed">
+                    Apoio da família e foco em nicho nobre. Mais recursos iniciais (Caixa 7d6 descartando menor × R$100), 2d6 de Reputação e equipamentos em melhor estado.
                   </span>
                 </button>
               </div>
@@ -327,9 +319,11 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 3 ===================== */}
         {etapaAtual === 3 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 3 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 3 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Monte a Equipe e Preencha as Fichas
               </h2>
             </div>
@@ -338,33 +332,35 @@ export const GuiaPassoAPasso: React.FC = () => {
               Agora vamos montar a equipe! Escolham a classe de vocês na tabela e deem um nome ao seu personagem. Duas pessoas podem escolher a mesma classe. Depois, contem em uma frase como vocês querem ajudar no negócio. E o mais importante: qual vai ser o nome da nossa confeitaria de chocolates?
             </FalaDeApoio>
 
-            <div className="rounded-xl border border-amber-300 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
-              <h4 className="font-bold text-xs uppercase text-stone-600 mb-2">Nome do Estabelecimento:</h4>
+            <div className="rounded-2xl border-2 border-amber-400 bg-amber-50/50 p-4 dark:border-stone-800 dark:bg-stone-900">
+              <h4 className="font-black text-xs uppercase tracking-wide text-amber-950 dark:text-amber-200 mb-2">
+                Nome do Estabelecimento:
+              </h4>
               <input
                 type="text"
                 value={session.nomeNegocio}
                 onChange={(e) => updateSession({ nomeNegocio: e.target.value })}
-                placeholder="Ex: Cacau da Bahia, Doce Cabruca..."
-                className="w-full rounded-xl border border-amber-300 p-2 text-base font-bold text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+                placeholder="Ex: Cacau & Encanto Confeitaria"
+                className="w-full rounded-xl border-2 border-amber-400 bg-white p-2.5 text-base font-black text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 shadow-sm"
               />
             </div>
 
-            {/* Rolagens Iniciais de REP e Caixa */}
+            {/* Rolagens Iniciais de REP e Caixa com Alto Contraste */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-4 dark:border-stone-800 dark:bg-stone-800/40">
-                <span className="font-bold text-xs uppercase text-amber-800 dark:text-amber-300 block mb-1">
+              <div className="rounded-2xl border-2 border-amber-500 bg-amber-50/70 p-5 dark:border-stone-800 dark:bg-[#23150D]">
+                <span className="font-black text-xs uppercase tracking-wide text-amber-950 dark:text-amber-200 block mb-1">
                   1. Rolagem de Reputação Inicial:
                 </span>
-                <p className="text-xs text-stone-500 mb-3">
+                <p className="text-xs font-semibold text-stone-600 dark:text-stone-400 mb-3">
                   {perfil === 'visao' ? '2d6 somados' : '1d6 simples'}
                 </p>
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl font-black text-amber-700 dark:text-amber-400">
+                <div className="flex items-center justify-between">
+                  <span className="text-3xl font-black text-amber-800 dark:text-amber-300">
                     REP: {indicadores.rep}
                   </span>
                   <button
                     onClick={handleRolarReputacaoInicial}
-                    className="flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-white shadow hover:bg-amber-700"
+                    className="flex items-center gap-1.5 rounded-xl bg-amber-700 px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-amber-600 transition"
                   >
                     <Dices className="h-4 w-4" />
                     <span>Rolar no Dado</span>
@@ -372,22 +368,22 @@ export const GuiaPassoAPasso: React.FC = () => {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50/50 p-4 dark:border-stone-800 dark:bg-stone-800/40">
-                <span className="font-bold text-xs uppercase text-emerald-800 dark:text-emerald-300 block mb-1">
+              <div className="rounded-2xl border-2 border-emerald-500 bg-emerald-50/70 p-5 dark:border-stone-800 dark:bg-[#122216]">
+                <span className="font-black text-xs uppercase tracking-wide text-emerald-950 dark:text-emerald-200 block mb-1">
                   2. Rolagem de Caixa Inicial:
                 </span>
-                <p className="text-xs text-stone-500 mb-3">
+                <p className="text-xs font-semibold text-stone-600 dark:text-stone-400 mb-3">
                   {perfil === 'visao'
                     ? 'Role 7d6, descarte o menor e multiplique por R$100'
                     : 'Role 6d4, descarte o menor e multiplique por R$100'}
                 </p>
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl font-black text-emerald-700 dark:text-emerald-400">
+                <div className="flex items-center justify-between">
+                  <span className="text-3xl font-black text-emerald-800 dark:text-emerald-300">
                     R$ {indicadores.caixa.toFixed(2)}
                   </span>
                   <button
                     onClick={handleRolarCaixaInicial}
-                    className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-bold text-white shadow hover:bg-emerald-700"
+                    className="flex items-center gap-1.5 rounded-xl bg-emerald-700 px-4 py-2 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-emerald-600 transition"
                   >
                     <Dices className="h-4 w-4" />
                     <span>Rolar Caixa</span>
@@ -401,9 +397,11 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 4 ===================== */}
         {etapaAtual === 4 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 4 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 4 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Sorteie o Kit Gratuito e Revele a Herança da Avó
               </h2>
             </div>
@@ -413,36 +411,36 @@ export const GuiaPassoAPasso: React.FC = () => {
             </FalaDeApoio>
 
             {/* Painel do Kit Sorteado */}
-            <div className="rounded-xl border border-amber-300 bg-amber-50/50 p-4 dark:border-stone-800 dark:bg-stone-800/40">
-              <div className="flex items-center justify-between mb-3 border-b pb-2">
-                <span className="font-bold text-xs uppercase text-amber-900 dark:text-amber-200">
+            <div className="rounded-2xl border-2 border-amber-400 bg-amber-50/60 p-5 dark:border-stone-800 dark:bg-stone-900">
+              <div className="flex items-center justify-between mb-4 border-b border-amber-200 pb-2.5 dark:border-stone-800">
+                <span className="font-black text-xs uppercase tracking-wider text-amber-950 dark:text-amber-200">
                   Equipamentos Iniciais da Equipe (Perfil {perfil === 'visao' ? 'Visão' : 'Resiliência'}):
                 </span>
                 <button
                   onClick={handleRolarKitInicial}
-                  className="flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-bold text-white shadow hover:bg-amber-700"
+                  className="flex items-center gap-1.5 rounded-xl bg-amber-700 px-3.5 py-2 text-xs font-black uppercase tracking-wider text-white shadow hover:bg-amber-600 transition"
                 >
                   <Dices className="h-4 w-4" />
                   <span>Sortear Kit nos Dados</span>
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
-                <div className="p-2 rounded bg-white dark:bg-stone-900 border">
-                  <span className="text-stone-400 block font-bold">Geladeira:</span>
-                  <span className="font-bold text-stone-800 dark:text-stone-200">{kit.geladeira}</span>
+              <div className="grid grid-cols-2 gap-3 text-xs sm:grid-cols-4 font-bold">
+                <div className="p-3 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 shadow-sm">
+                  <span className="text-stone-500 block text-[11px] mb-1">Geladeira:</span>
+                  <span className="font-black text-sm text-stone-900 dark:text-stone-100">{kit.geladeira}</span>
                 </div>
-                <div className="p-2 rounded bg-white dark:bg-stone-900 border">
-                  <span className="text-stone-400 block font-bold">Fogão:</span>
-                  <span className="font-bold text-stone-800 dark:text-stone-200">{kit.fogaoBocas} bocas</span>
+                <div className="p-3 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 shadow-sm">
+                  <span className="text-stone-500 block text-[11px] mb-1">Fogão:</span>
+                  <span className="font-black text-sm text-stone-900 dark:text-stone-100">{kit.fogaoBocas} bocas</span>
                 </div>
-                <div className="p-2 rounded bg-white dark:bg-stone-900 border">
-                  <span className="text-stone-400 block font-bold">Batedeira:</span>
-                  <span className="font-bold text-stone-800 dark:text-stone-200">{kit.batedeira} un.</span>
+                <div className="p-3 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 shadow-sm">
+                  <span className="text-stone-500 block text-[11px] mb-1">Batedeira:</span>
+                  <span className="font-black text-sm text-stone-900 dark:text-stone-100">{kit.batedeira} unidade</span>
                 </div>
-                <div className="p-2 rounded bg-white dark:bg-stone-900 border">
-                  <span className="text-stone-400 block font-bold">Panelas:</span>
-                  <span className="font-bold text-stone-800 dark:text-stone-200">
+                <div className="p-3 rounded-xl bg-white dark:bg-stone-800 border-2 border-stone-200 dark:border-stone-700 shadow-sm">
+                  <span className="text-stone-500 block text-[11px] mb-1">Panelas:</span>
+                  <span className="font-black text-sm text-stone-900 dark:text-stone-100">
                     {kit.panelas.map((p) => `${p.tamanho} (${p.capacidade})`).join(', ') || 'Rolar'}
                   </span>
                 </div>
@@ -458,9 +456,11 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 5 ===================== */}
         {etapaAtual === 5 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 5 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 5 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Primeiro Desafio · Escolher 2 Produtos, Comprar e Precificar
               </h2>
             </div>
@@ -469,12 +469,12 @@ export const GuiaPassoAPasso: React.FC = () => {
               {NARRATIVAS_JOGO.pascoaChegou}
             </FalaDeApoio>
 
-            <div className="rounded-xl border border-amber-300 bg-white p-4 dark:border-stone-800 dark:bg-stone-900">
-              <h4 className="font-bold text-xs uppercase text-amber-800 dark:text-amber-300 mb-2">
+            <div className="rounded-2xl border-2 border-amber-400 bg-amber-50/50 p-5 dark:border-stone-800 dark:bg-stone-900">
+              <h4 className="font-black text-xs uppercase tracking-wider text-amber-950 dark:text-amber-200 mb-3">
                 1. Escolham 2 dos 4 Produtos do Catálogo de Páscoa:
               </h4>
 
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
                 {CATALOGO_PASCOA.map((prod) => {
                   const selecionado = produtosEscolhidos.includes(prod.nome);
                   return (
@@ -482,17 +482,17 @@ export const GuiaPassoAPasso: React.FC = () => {
                       key={prod.id}
                       type="button"
                       onClick={() => toggleProdutoEscolhido(prod.nome)}
-                      className={`rounded-xl border p-3 text-left transition ${
+                      className={`rounded-2xl border-2 p-3.5 text-left transition-all ${
                         selecionado
-                          ? 'border-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 shadow-sm'
-                          : 'border-stone-200 bg-white hover:bg-stone-50 dark:border-stone-800 dark:bg-stone-800'
+                          ? 'border-emerald-600 bg-emerald-50 dark:bg-emerald-950/80 shadow-md ring-2 ring-emerald-500/30'
+                          : 'border-stone-300 bg-white hover:bg-stone-50 dark:border-stone-700 dark:bg-stone-800'
                       }`}
                     >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-bold text-xs text-stone-900 dark:text-stone-100">{prod.nome}</span>
-                        {selecionado && <CheckCircle2 className="h-4 w-4 text-emerald-600" />}
+                      <div className="flex items-center justify-between mb-1.5">
+                        <span className="font-black text-sm text-stone-900 dark:text-stone-100">{prod.nome}</span>
+                        {selecionado && <CheckCircle2 className="h-5 w-5 text-emerald-600" />}
                       </div>
-                      <span className="block text-[10px] text-stone-500">
+                      <span className="block text-xs font-bold text-amber-800 dark:text-amber-300">
                         {prod.chocolateG}g choc {prod.recheioG > 0 && `+ ${prod.recheioG}g recheio`}
                       </span>
                     </button>
@@ -500,22 +500,22 @@ export const GuiaPassoAPasso: React.FC = () => {
                 })}
               </div>
 
-              <div className="mt-3 text-xs text-stone-600 dark:text-stone-400 flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-amber-200 text-xs font-bold text-stone-800 dark:text-stone-200 flex items-center justify-between">
                 <span>
-                  Produtos selecionados: <strong>{produtosEscolhidos.join(' & ') || 'Nenhum ainda'}</strong>
+                  Produtos selecionados: <strong className="text-amber-800 dark:text-amber-300">{produtosEscolhidos.join(' & ') || 'Nenhum ainda'}</strong>
                 </span>
-                <span className="font-bold text-amber-700 dark:text-amber-300">
+                <span className="rounded-full bg-amber-200/80 px-2.5 py-1 text-amber-950 font-black">
                   {produtosEscolhidos.length} / 2 escolhidos
                 </span>
               </div>
             </div>
 
-            <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 text-xs dark:border-stone-800 dark:bg-stone-800/40 space-y-2">
-              <span className="font-bold text-stone-800 dark:text-stone-200 block">
+            <div className="rounded-xl border-2 border-stone-300 bg-stone-50 p-4 text-xs font-medium dark:border-stone-800 dark:bg-stone-900 space-y-2 text-stone-800 dark:text-stone-200">
+              <span className="font-black text-sm text-[#1F1007] dark:text-white block">
                 Instruções do Mestre para a Mesa:
               </span>
               <p>1. Peçam quantas unidades do lote querem produzir de cada um dos dois produtos.</p>
-              <p>2. Usem a aba <strong>&quot;Fichas & Equipe &gt; Ficha de Precificação&quot;</strong> ou a <strong>&quot;Ficha do Negócio&quot;</strong> para lançar os ingredientes comprados e calcular o custo proporcional da parte usada.</p>
+              <p>2. Usem a aba <strong>&quot;Precificação&quot;</strong> ou a <strong>&quot;Ficha do Negócio&quot;</strong> para comprar os ingredientes e calcular o custo proporcional da parte usada.</p>
               <p>3. Quando a equipe definir os dois preços de venda, avancem para a Etapa 6 para revelar o pedido da Tia!</p>
             </div>
           </div>
@@ -524,9 +524,11 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 6 ===================== */}
         {etapaAtual === 6 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 6 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 6 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Cena da Tia · O Primeiro Pedido
               </h2>
             </div>
@@ -538,9 +540,11 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 7 ===================== */}
         {etapaAtual === 7 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 7 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 7 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Próximos Turnos · Demanda + Acontecimento Inesperado
               </h2>
             </div>
@@ -556,35 +560,43 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 8 ===================== */}
         {etapaAtual === 8 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 8 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 8 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Cola de Regras Rápidas do Mestre
               </h2>
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 text-xs">
-              <div className="rounded-xl border border-amber-300 bg-amber-50/50 p-4 dark:border-stone-800 dark:bg-stone-800/40 space-y-2">
-                <h4 className="font-bold text-sm text-amber-900 dark:text-amber-200">
+              <div className="rounded-2xl border-2 border-amber-500 bg-amber-50/70 p-5 dark:border-stone-800 dark:bg-stone-900 space-y-2.5">
+                <h4 className="font-black text-sm text-amber-950 dark:text-amber-200 uppercase tracking-wide">
                   Como e Quando Rolar os Dados:
                 </h4>
-                <p><strong>Quando rolar:</strong> Apenas quando a ação tiver resultado incerto ou depender de habilidade sob pressão.</p>
-                <p><strong>Fórmula:</strong> 1d20 + Modificador da Perícia (igual ao valor do atributo).</p>
-                <p><strong>Meta:</strong> Total ≥ 15 é Sucesso! Abaixo de 15 é Falha (perde tempo, gasta mais insumos ou perde REP).</p>
+                <p className="font-medium text-stone-800 dark:text-stone-200">
+                  <strong>Quando rolar:</strong> Apenas quando a ação tiver resultado incerto ou depender de habilidade sob pressão.
+                </p>
+                <p className="font-medium text-stone-800 dark:text-stone-200">
+                  <strong>Fórmula:</strong> 1d20 + Modificador da Perícia (igual ao valor do atributo).
+                </p>
+                <p className="font-medium text-stone-800 dark:text-stone-200">
+                  <strong>Meta:</strong> Total ≥ 15 é Sucesso! Abaixo de 15 é Falha (perde tempo, gasta mais insumos ou perde REP).
+                </p>
                 <button
                   onClick={() => abrirModal()}
-                  className="mt-2 flex items-center gap-1.5 rounded-lg bg-amber-600 px-3 py-1.5 font-bold text-white shadow hover:bg-amber-700"
+                  className="mt-2 flex items-center gap-1.5 rounded-xl bg-amber-700 px-4 py-2 font-black uppercase text-white shadow hover:bg-amber-600 transition"
                 >
                   <Dices className="h-4 w-4" />
                   <span>Abrir Rolador de Dados</span>
                 </button>
               </div>
 
-              <div className="rounded-xl border border-stone-200 bg-stone-50 p-4 dark:border-stone-800 dark:bg-stone-800/40 space-y-2">
-                <h4 className="font-bold text-sm text-stone-800 dark:text-stone-200">
+              <div className="rounded-2xl border-2 border-stone-300 bg-stone-50 p-5 dark:border-stone-800 dark:bg-stone-900 space-y-2 text-stone-800 dark:text-stone-200">
+                <h4 className="font-black text-sm text-stone-900 dark:text-stone-100 uppercase tracking-wide">
                   Atributos & Perícias na Ficha:
                 </h4>
-                <ul className="space-y-1">
+                <ul className="space-y-1.5 font-medium">
                   <li><strong>INT (Inteligência):</strong> Administração e Planejamento</li>
                   <li><strong>SAB (Sabedoria):</strong> Intuição e Cálculo</li>
                   <li><strong>DES (Destreza):</strong> Fabricar e Confeiteiro</li>
@@ -599,9 +611,11 @@ export const GuiaPassoAPasso: React.FC = () => {
         {/* ===================== ETAPA 9 ===================== */}
         {etapaAtual === 9 && (
           <div className="space-y-5">
-            <div className="border-b pb-3">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider">Etapa 9 de 9</span>
-              <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100">
+            <div className="border-b-2 border-amber-200 pb-3 dark:border-stone-800">
+              <span className="text-xs font-black text-amber-700 uppercase tracking-wider dark:text-amber-400">
+                Etapa 9 de 9
+              </span>
+              <h2 className="text-2xl font-black text-[#1F1007] dark:text-white mt-0.5">
                 Encerre e Deixe o Próximo Começo Pronto
               </h2>
             </div>
@@ -610,36 +624,36 @@ export const GuiaPassoAPasso: React.FC = () => {
               {NARRATIVAS_JOGO.encerramentoSessao}
             </FalaDeApoio>
 
-            <div className="rounded-xl border border-amber-300 bg-white p-4 dark:border-stone-800 dark:bg-stone-900 text-xs space-y-2">
-              <span className="font-bold text-stone-800 dark:text-stone-200 block">
+            <div className="rounded-2xl border-2 border-amber-400 bg-amber-50/70 p-5 dark:border-stone-800 dark:bg-stone-900 text-xs space-y-2.5 font-medium text-stone-800 dark:text-stone-200">
+              <span className="font-black text-sm text-[#1F1007] dark:text-white block">
                 Resumo da Sessão Atual para Guardar:
               </span>
-              <p>• Saldo em Caixa Final: <strong>R$ {indicadores.caixa.toFixed(2)}</strong></p>
+              <p>• Saldo em Caixa Final: <strong className="text-emerald-700 dark:text-emerald-400 text-base">R$ {indicadores.caixa.toFixed(2)}</strong></p>
               <p>• Indicadores: REP {indicadores.rep} | ETI {indicadores.eti} | ER {indicadores.er} | EXP {indicadores.exp}</p>
               <p>• Todos os dados estão salvos automaticamente no seu navegador!</p>
             </div>
           </div>
         )}
 
-        {/* Navegação Inferior de Etapas */}
-        <div className="mt-8 flex items-center justify-between border-t border-amber-200 pt-4 dark:border-stone-800">
+        {/* Navegação Inferior de Etapas com Alto Contraste */}
+        <div className="mt-8 flex items-center justify-between border-t-2 border-amber-200 pt-4 dark:border-stone-800">
           <button
             onClick={() => setEtapa(Math.max(1, etapaAtual - 1))}
             disabled={etapaAtual === 1}
-            className="flex items-center gap-1 rounded-xl border border-stone-300 bg-white px-4 py-2 text-xs font-bold text-stone-700 hover:bg-stone-100 disabled:opacity-40 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-200"
+            className="flex items-center gap-1.5 rounded-xl border-2 border-stone-400 bg-white px-4 py-2 text-xs font-black uppercase text-stone-800 hover:bg-stone-100 disabled:opacity-40 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-200 transition"
           >
             <ChevronLeft className="h-4 w-4" />
             <span>Etapa Anterior</span>
           </button>
 
-          <span className="text-xs font-semibold text-stone-500">
+          <span className="text-xs font-black text-[#4A2D1B] dark:text-amber-200">
             {etapaAtual} de 9
           </span>
 
           <button
             onClick={() => setEtapa(Math.min(9, etapaAtual + 1))}
             disabled={etapaAtual === 9}
-            className="flex items-center gap-1 rounded-xl bg-amber-600 px-4 py-2 text-xs font-bold text-white shadow hover:bg-amber-700 disabled:opacity-40"
+            className="flex items-center gap-1.5 rounded-xl bg-amber-700 px-5 py-2 text-xs font-black uppercase text-white shadow-md hover:bg-amber-600 disabled:opacity-40 transition"
           >
             <span>Próxima Etapa</span>
             <ChevronRight className="h-4 w-4" />

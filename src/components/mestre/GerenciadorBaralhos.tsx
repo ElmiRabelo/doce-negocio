@@ -5,7 +5,7 @@ import { useSessionStore } from '@/store/sessionStore';
 import { CARTAS_DEMANDA_OFICIAIS, CARTAS_MONTE_MISTO_OFICIAIS } from '@/data/cartas-oficiais';
 import { CARTAS_EXTRAS_REGIONAL } from '@/data/demandas-extras';
 import { GameCard, CardType, AttributeKey } from '@/types';
-import { Plus, Trash2, Edit3, Sparkles, AlertTriangle, ShieldCheck, Download, Upload, Filter } from 'lucide-react';
+import { Plus, Trash2, Edit3, Sparkles, AlertTriangle, ShieldCheck, Download, Filter } from 'lucide-react';
 
 export const GerenciadorBaralhos: React.FC = () => {
   const { getActiveSession, salvarCartaCustomizada, removerCartaCustomizada } = useSessionStore();
@@ -24,7 +24,6 @@ export const GerenciadorBaralhos: React.FC = () => {
   const [filtroFonte, setFiltroFonte] = useState<string>('todos');
   const [busca, setBusca] = useState<string>('');
 
-  // Formulário de nova carta
   const [modoCriacao, setModoCriacao] = useState<boolean>(false);
   const [cartaIdEdicao, setCartaIdEdicao] = useState<string | null>(null);
 
@@ -111,23 +110,23 @@ export const GerenciadorBaralhos: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header do Gerenciador */}
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-amber-300 bg-white p-6 shadow-sm dark:border-amber-700/60 dark:bg-stone-900">
+      {/* Header do Gerenciador com Alto Contraste */}
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border-2 border-[#C2824D] bg-white p-6 shadow-md dark:border-amber-700 dark:bg-[#1B110A] text-stone-900 dark:text-stone-100">
         <div>
-          <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-amber-600" />
+          <h2 className="text-2xl font-black text-stone-900 dark:text-white flex items-center gap-2.5">
+            <Sparkles className="h-6 w-6 text-amber-700 dark:text-amber-400" />
             Gerenciador & Criador de Baralhos
           </h2>
-          <p className="text-xs text-stone-500 mt-1">
+          <p className="text-xs font-semibold text-stone-600 dark:text-amber-200/90 mt-1">
             Consulte todas as 30+ cartas do jogo (oficiais e regionais) e crie novos clientes, imprevistos e vantagens com narrativas personalizadas.
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2.5">
           {customizadas.length > 0 && (
             <button
               onClick={exportarCartasCustomizadas}
-              className="flex items-center gap-1.5 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-900 hover:bg-amber-100 dark:border-stone-700 dark:bg-stone-800 dark:text-amber-300"
+              className="flex items-center gap-1.5 rounded-xl border-2 border-amber-400 bg-amber-50 px-3.5 py-2 text-xs font-black uppercase text-amber-950 hover:bg-amber-100 dark:border-stone-700 dark:bg-stone-800 dark:text-amber-200"
             >
               <Download className="h-4 w-4" />
               <span>Exportar Baralho ({customizadas.length})</span>
@@ -136,7 +135,7 @@ export const GerenciadorBaralhos: React.FC = () => {
 
           <button
             onClick={abrirCriacao}
-            className="flex items-center gap-1.5 rounded-xl bg-amber-600 px-4 py-2 text-xs font-bold text-white shadow hover:bg-amber-700 transition"
+            className="flex items-center gap-1.5 rounded-xl bg-amber-700 px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-amber-600 transition"
           >
             <Plus className="h-4 w-4" />
             <span>Criar Nova Carta</span>
@@ -144,20 +143,20 @@ export const GerenciadorBaralhos: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal / Painel de Criação */}
+      {/* Formulário de Criação */}
       {modoCriacao && (
         <form
           onSubmit={salvarCarta}
-          className="rounded-2xl border-2 border-amber-400 bg-amber-50/70 p-6 shadow-md dark:border-amber-700 dark:bg-stone-900"
+          className="rounded-2xl border-2 border-amber-500 bg-amber-50/80 p-6 shadow-lg dark:border-amber-700 dark:bg-stone-900 text-stone-900 dark:text-stone-100"
         >
-          <div className="flex items-center justify-between border-b border-amber-200 pb-3 mb-4 dark:border-stone-800">
-            <h3 className="text-base font-bold text-stone-900 dark:text-stone-100">
+          <div className="flex items-center justify-between border-b-2 border-amber-300 pb-3 mb-4 dark:border-stone-800">
+            <h3 className="text-lg font-black text-stone-900 dark:text-white">
               {cartaIdEdicao ? 'Editar Carta Customizada' : 'Criar Nova Carta para o Baralho'}
             </h3>
             <button
               type="button"
               onClick={() => setModoCriacao(false)}
-              className="text-xs font-bold text-stone-500 hover:text-stone-800"
+              className="text-xs font-black uppercase text-stone-500 hover:text-stone-900 dark:hover:text-white"
             >
               Cancelar
             </button>
@@ -165,13 +164,13 @@ export const GerenciadorBaralhos: React.FC = () => {
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div>
-              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+              <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                 Tipo da Carta:
               </label>
               <select
                 value={formTipo}
                 onChange={(e) => setFormTipo(e.target.value as CardType)}
-                className="w-full rounded-lg border border-amber-300 bg-white p-2 text-sm text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+                className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 text-sm font-bold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
               >
                 <option value="demanda">Demanda (Novo Pedido / Cliente)</option>
                 <option value="obstaculo">Obstáculo (Imprevisto / Desafio)</option>
@@ -180,7 +179,7 @@ export const GerenciadorBaralhos: React.FC = () => {
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+              <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                 Título da Carta:
               </label>
               <input
@@ -189,12 +188,12 @@ export const GerenciadorBaralhos: React.FC = () => {
                 value={formTitulo}
                 onChange={(e) => setFormTitulo(e.target.value)}
                 placeholder="Ex: Encomenda da Noiva Exigente, Queda de Tensão na Cozinha, etc."
-                className="w-full rounded-lg border border-amber-300 bg-white p-2 text-sm text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+                className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 text-sm font-bold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
               />
             </div>
 
             <div className="md:col-span-3">
-              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+              <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                 Narrativa Completa (Texto para ler para a mesa 🔊):
               </label>
               <textarea
@@ -203,12 +202,12 @@ export const GerenciadorBaralhos: React.FC = () => {
                 value={formNarrativa}
                 onChange={(e) => setFormNarrativa(e.target.value)}
                 placeholder="Descreva a cena rica em detalhes: quem procurou a equipe, o que aconteceu, qual o clima de Ilhéus, etc."
-                className="w-full rounded-lg border border-amber-300 bg-white p-2 text-sm text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100 font-serif"
+                className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 text-sm font-serif leading-relaxed text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
               />
             </div>
 
             <div className="md:col-span-3">
-              <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+              <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                 Efeito de Regra / Consequência:
               </label>
               <input
@@ -216,20 +215,20 @@ export const GerenciadorBaralhos: React.FC = () => {
                 value={formEfeito}
                 onChange={(e) => setFormEfeito(e.target.value)}
                 placeholder="Ex: Paga 20% acima se entregue até as 18h; ou Gasta R$ 30 de reparo."
-                className="w-full rounded-lg border border-amber-300 bg-white p-2 text-sm text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+                className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 text-sm font-bold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
               />
             </div>
 
             {formTipo !== 'vantagem' && (
               <>
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                  <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                     Perícia Sugerida:
                   </label>
                   <select
                     value={formPericia}
                     onChange={(e) => setFormPericia(e.target.value)}
-                    className="w-full rounded-lg border border-amber-300 bg-white p-2 text-sm text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+                    className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 text-sm font-bold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
                   >
                     <option value="Administração">Administração (INT)</option>
                     <option value="Planejamento">Planejamento (INT)</option>
@@ -245,13 +244,13 @@ export const GerenciadorBaralhos: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                  <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                     Atributo Base:
                   </label>
                   <select
                     value={formAtributo}
                     onChange={(e) => setFormAtributo(e.target.value as AttributeKey)}
-                    className="w-full rounded-lg border border-amber-300 bg-white p-2 text-sm text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+                    className="w-full rounded-xl border-2 border-amber-300 bg-white p-2.5 text-sm font-bold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
                   >
                     <option value="int">Inteligência (INT)</option>
                     <option value="sab">Sabedoria (SAB)</option>
@@ -262,31 +261,31 @@ export const GerenciadorBaralhos: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-stone-700 dark:text-stone-300 mb-1">
+                  <label className="block text-xs font-black uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-1">
                     Classe de Dificuldade (CD):
                   </label>
                   <input
                     type="number"
                     value={formCd}
                     onChange={(e) => setFormCd(parseInt(e.target.value) || 15)}
-                    className="w-full rounded-lg border border-amber-300 bg-white p-2 text-sm font-bold text-center text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+                    className="w-full rounded-xl border-2 border-amber-300 bg-white p-2 text-sm font-black text-center text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
                   />
                 </div>
               </>
             )}
           </div>
 
-          <div className="mt-5 flex justify-end gap-2">
+          <div className="mt-5 flex justify-end gap-2.5">
             <button
               type="button"
               onClick={() => setModoCriacao(false)}
-              className="rounded-xl border border-stone-300 bg-white px-4 py-2 text-xs font-bold text-stone-700 hover:bg-stone-100 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-200"
+              className="rounded-xl border-2 border-stone-300 bg-white px-4 py-2 text-xs font-black uppercase text-stone-700 hover:bg-stone-100"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-amber-600 px-5 py-2 text-xs font-bold text-white shadow hover:bg-amber-700"
+              className="rounded-xl bg-amber-700 px-5 py-2 text-xs font-black uppercase tracking-wider text-white shadow-md hover:bg-amber-600 transition"
             >
               Salvar Carta no Baralho
             </button>
@@ -295,15 +294,15 @@ export const GerenciadorBaralhos: React.FC = () => {
       )}
 
       {/* Barra de Filtros e Busca */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-200 bg-white p-3 text-xs dark:border-stone-800 dark:bg-stone-900">
-        <div className="flex flex-wrap items-center gap-2">
-          <Filter className="h-4 w-4 text-amber-600" />
-          <span className="font-semibold text-stone-600 dark:text-stone-300">Filtros:</span>
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border-2 border-amber-300 bg-white p-4 text-xs font-bold dark:border-stone-800 dark:bg-[#1B110A]">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <Filter className="h-4 w-4 text-amber-700 dark:text-amber-400" />
+          <span className="text-stone-800 dark:text-stone-200 uppercase tracking-wide">Filtros:</span>
 
           <select
             value={filtroTipo}
             onChange={(e) => setFiltroTipo(e.target.value)}
-            className="rounded border border-amber-300 bg-amber-50 px-2 py-1 font-medium dark:border-stone-700 dark:bg-stone-800"
+            className="rounded-xl border-2 border-amber-300 bg-amber-50 px-3 py-1.5 font-bold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-white"
           >
             <option value="todos">Todos os Tipos ({todasCartas.length})</option>
             <option value="demanda">Só Demandas</option>
@@ -314,7 +313,7 @@ export const GerenciadorBaralhos: React.FC = () => {
           <select
             value={filtroFonte}
             onChange={(e) => setFiltroFonte(e.target.value)}
-            className="rounded border border-amber-300 bg-amber-50 px-2 py-1 font-medium dark:border-stone-700 dark:bg-stone-800"
+            className="rounded-xl border-2 border-amber-300 bg-amber-50 px-3 py-1.5 font-bold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-white"
           >
             <option value="todos">Todas as Fontes</option>
             <option value="oficial">Oficiais do Manual (25)</option>
@@ -328,12 +327,12 @@ export const GerenciadorBaralhos: React.FC = () => {
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
           placeholder="Buscar no baralho..."
-          className="rounded-lg border border-amber-300 px-3 py-1 text-xs text-stone-800 dark:border-stone-700 dark:bg-stone-800 dark:text-stone-100"
+          className="rounded-xl border-2 border-amber-300 bg-white px-3.5 py-1.5 text-xs font-semibold text-stone-900 dark:border-stone-700 dark:bg-stone-800 dark:text-white shadow-sm"
         />
       </div>
 
-      {/* Grid de Cartas */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Grid de Cartas com Alto Contraste */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {cartasFiltradas.map((carta) => {
           const isVantagem = carta.tipo === 'vantagem';
           const isDemanda = carta.tipo === 'demanda';
@@ -342,29 +341,29 @@ export const GerenciadorBaralhos: React.FC = () => {
           return (
             <div
               key={carta.id}
-              className={`flex flex-col justify-between rounded-xl border-2 bg-white p-4 shadow-sm transition hover:shadow-md dark:bg-stone-900 ${
+              className={`flex flex-col justify-between rounded-2xl border-2 bg-white p-5 shadow-sm transition hover:shadow-md dark:bg-[#1B110A] ${
                 isDemanda
-                  ? 'border-amber-300 dark:border-amber-700/60'
+                  ? 'border-amber-400 dark:border-amber-600'
                   : isVantagem
-                  ? 'border-emerald-300 dark:border-emerald-700/60'
-                  : 'border-rose-300 dark:border-rose-700/60'
+                  ? 'border-emerald-500 dark:border-emerald-600'
+                  : 'border-rose-500 dark:border-rose-600'
               }`}
             >
               <div>
-                <div className="flex items-center justify-between border-b pb-2 mb-2 text-xs">
-                  <div className="flex items-center gap-1.5 font-bold">
+                <div className="flex items-center justify-between border-b-2 pb-2 mb-2.5 text-xs">
+                  <div className="flex items-center gap-1.5 font-black uppercase tracking-wide">
                     {isDemanda ? (
-                      <Sparkles className="h-4 w-4 text-amber-600" />
+                      <Sparkles className="h-4 w-4 text-amber-700 dark:text-amber-400" />
                     ) : isVantagem ? (
-                      <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                      <ShieldCheck className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
                     ) : (
-                      <AlertTriangle className="h-4 w-4 text-rose-600" />
+                      <AlertTriangle className="h-4 w-4 text-rose-700 dark:text-rose-400" />
                     )}
-                    <span className="capitalize">{carta.tipo}</span>
+                    <span className="text-stone-900 dark:text-white">{carta.tipo}</span>
                   </div>
 
-                  <div className="flex items-center gap-1">
-                    <span className="rounded bg-stone-100 px-1.5 py-0.5 text-[10px] font-medium text-stone-600 dark:bg-stone-800 dark:text-stone-400">
+                  <div className="flex items-center gap-1.5">
+                    <span className="rounded-md border border-stone-300 bg-stone-100 px-2 py-0.5 text-[10px] font-black uppercase text-stone-800 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-200">
                       {carta.fonte === 'oficial'
                         ? `#${carta.numero || ''}`
                         : carta.fonte === 'extra'
@@ -375,41 +374,41 @@ export const GerenciadorBaralhos: React.FC = () => {
                       <div className="flex items-center gap-1 ml-1">
                         <button
                           onClick={() => abrirEdicao(carta)}
-                          className="p-1 text-stone-400 hover:text-amber-600"
+                          className="p-1 text-stone-500 hover:text-amber-700"
                           title="Editar"
                         >
-                          <Edit3 className="h-3.5 w-3.5" />
+                          <Edit3 className="h-4 w-4" />
                         </button>
                         <button
                           onClick={() => removerCartaCustomizada(carta.id)}
-                          className="p-1 text-stone-400 hover:text-rose-600"
+                          className="p-1 text-stone-500 hover:text-rose-700"
                           title="Remover"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <h4 className="font-bold text-sm text-stone-900 dark:text-stone-100 mb-2">
+                <h4 className="font-black text-base text-stone-900 dark:text-white mb-2">
                   {carta.titulo}
                 </h4>
 
-                <p className="font-serif text-xs leading-relaxed text-stone-700 dark:text-stone-300 mb-3 italic">
+                <p className="font-serif text-xs leading-relaxed text-stone-800 dark:text-stone-200 mb-3.5 italic">
                   &ldquo;{carta.narrativa}&rdquo;
                 </p>
 
-                <div className="rounded bg-stone-50 p-2 text-[11px] text-stone-700 dark:bg-stone-800/60 dark:text-stone-300">
-                  <strong className="block mb-0.5">Efeito:</strong>
+                <div className="rounded-xl border border-stone-200 bg-stone-50 p-2.5 text-xs font-semibold text-stone-800 dark:bg-stone-900 dark:border-stone-800 dark:text-stone-200">
+                  <strong className="block mb-0.5 text-[11px] font-black uppercase tracking-wider text-stone-600 dark:text-stone-400">Efeito:</strong>
                   {carta.efeitoRegra}
                 </div>
               </div>
 
               {carta.testeSugerido && (
-                <div className="mt-3 pt-2 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-500 dark:border-stone-800">
-                  <span>Teste Sugerido:</span>
-                  <span className="font-bold text-stone-800 dark:text-stone-200">
+                <div className="mt-3.5 pt-2.5 border-t-2 border-stone-200 flex items-center justify-between text-xs text-stone-600 dark:border-stone-800 dark:text-stone-300">
+                  <span className="font-bold">Teste Sugerido:</span>
+                  <span className="font-black text-stone-900 dark:text-white">
                     {carta.testeSugerido.pericia} (CD {carta.testeSugerido.cd})
                   </span>
                 </div>
