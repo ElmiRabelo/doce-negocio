@@ -1,69 +1,114 @@
-import Image from "next/image";
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useSessionStore } from '@/store/sessionStore';
+import { useDiceStore } from '@/store/diceStore';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { GuiaPassoAPasso } from '@/components/mestre/GuiaPassoAPasso';
+import { EscudoDoMestre } from '@/components/mestre/EscudoDoMestre';
+import { FichasPersonagens } from '@/components/fichas/FichasPersonagens';
+import { FichaNegocio } from '@/components/fichas/FichaNegocio';
+import { CalculadoraPrecificacao } from '@/components/fichas/CalculadoraPrecificacao';
+import { GerenciadorBaralhos } from '@/components/mestre/GerenciadorBaralhos';
+import { BibliotecaRegras } from '@/components/regras/BibliotecaRegras';
+import { RoladorDadosModal } from '@/components/dados/RoladorDadosModal';
+import { Sparkles, BookOpen, Shield, Dices } from 'lucide-react';
 
 export default function Home() {
+  const { sessions, activeSessionId, createSession, selectSession, getActiveSession } = useSessionStore();
+  const { abrirModal } = useDiceStore();
+
+  const [abaAtiva, setAbaAtiva] = useState<string>('guia');
+  const [isClient, setIsClient] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Cria sessão inicial se não existir nenhuma
+    if (sessions.length === 0) {
+      const s = createSession('Campanha de Páscoa', 'Chocolateria Ilhéus', 'resiliencia');
+      selectSession(s.id);
+    } else if (!activeSessionId) {
+      selectSession(sessions[0].id);
+    }
+  }, [sessions, activeSessionId, createSession, selectSession]);
+
+  // Atalho de teclado 'd' para abrir o rolador de dados
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Se não estiver digitando em um input ou textarea
+      const target = e.target as HTMLElement;
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
+
+      if (e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        abrirModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [abrirModal]);
+
+  if (!isClient) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#FAF7F2]">
+        <div className="text-center">
+          <span className="text-4xl animate-bounce block mb-2">🍫</span>
+          <p className="font-bold text-amber-900">Carregando Doce Negócio...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const session = getActiveSession();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="flex min-h-screen flex-col bg-[#FAF7F2] text-[#1A0F0A] dark:bg-[#140B07] dark:text-[#F4ECE1]">
+      <Header abaAtiva={abaAtiva} setAbaAtiva={setAbaAtiva} />
+
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 sm:py-8">
+        {/* Banner de Boas-Vindas Rápido se for primeira visita */}
+        {session && session.etapaAtual === 1 && abaAtiva === 'guia' && (
+          <div className="mb-6 rounded-2xl border border-amber-300 bg-gradient-to-r from-amber-500/10 via-amber-600/10 to-amber-700/10 p-5 dark:border-amber-700/50">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🌱</span>
+                <div>
+                  <h2 className="font-bold text-sm sm:text-base text-stone-900 dark:text-stone-100">
+                    Bem-vindo, Mestre! Você está no Modo Condução Passo a Passo.
+                  </h2>
+                  <p className="text-xs text-stone-600 dark:text-stone-300">
+                    Siga a ordem dos 9 passos numerados para guiar os jogadores na abertura da chocolateria. Pressione a tecla <kbd className="rounded border bg-white px-1 py-0.5 font-mono text-[10px] font-bold text-stone-800 dark:bg-stone-800 dark:text-stone-200">D</kbd> a qualquer momento para abrir o rolador de dados.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setAbaAtiva('escudo')}
+                className="flex items-center gap-1.5 rounded-xl border border-amber-400 bg-white px-3 py-1.5 text-xs font-bold text-amber-900 shadow-sm hover:bg-amber-100 dark:border-stone-700 dark:bg-stone-800 dark:text-amber-200"
+              >
+                <Shield className="h-4 w-4 text-amber-600" />
+                <span>Ir para o Escudo Livre</span>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Abas Dinâmicas */}
+        {abaAtiva === 'guia' && <GuiaPassoAPasso />}
+        {abaAtiva === 'escudo' && <EscudoDoMestre />}
+        {abaAtiva === 'personagens' && <FichasPersonagens />}
+        {abaAtiva === 'negocio' && <FichaNegocio />}
+        {abaAtiva === 'precificacao' && <CalculadoraPrecificacao />}
+        {abaAtiva === 'baralhos' && <GerenciadorBaralhos />}
+        {abaAtiva === 'regras' && <BibliotecaRegras />}
       </main>
+
+      <Footer />
+
+      {/* Rolador de Dados Global */}
+      <RoladorDadosModal />
     </div>
   );
 }

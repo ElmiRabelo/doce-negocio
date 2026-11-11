@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="cacauGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A2B1C"/>
+      <stop offset="50%" stop-color="#26150E"/>
+      <stop offset="100%" stop-color="#1A0F0A"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="50%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#B45309"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#cacauGrad)"/>
+  <circle cx="256" cy="256" r="210" fill="none" stroke="url(#goldGrad)" stroke-width="8" stroke-dasharray="16 12"/>
+  <!-- Cacau Fruit Shape -->
+  <path d="M256 90 C340 130 380 230 350 330 C320 410 256 430 256 430 C256 430 192 410 162 330 C132 230 172 130 256 90 Z" fill="#693D27" stroke="url(#goldGrad)" stroke-width="10"/>
+  <!-- Grooves on Cacao -->
+  <path d="M256 90 Q240 260 256 430" fill="none" stroke="url(#goldGrad)" stroke-width="6"/>
+  <path d="M256 90 Q290 260 256 430" fill="none" stroke="url(#goldGrad)" stroke-width="6"/>
+  <path d="M256 90 Q200 260 210 380" fill="none" stroke="url(#goldGrad)" stroke-width="5"/>
+  <path d="M256 90 Q312 260 302 380" fill="none" stroke="url(#goldGrad)" stroke-width="5"/>
+  <!-- D20 Sparkle in center -->
+  <polygon points="256,200 295,225 295,275 256,300 217,275 217,225" fill="#F59E0B" stroke="#FAF7F2" stroke-width="4"/>
+  <text x="256" y="260" font-family="sans-serif" font-weight="900" font-size="28" fill="#1A0F0A" text-anchor="middle">20</text>
+</svg>

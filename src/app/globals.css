@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  
+  /* Cores temáticas do Doce Negócio */
+  --cacau-950: #1a0f0a;
+  --cacau-900: #26150e;
+  --cacau-800: #381f14;
+  --cacau-700: #4a2b1c;
+  --cacau-600: #693d27;
+  
+  --caramelo-500: #d97706;
+  --caramelo-400: #f59e0b;
+  --caramelo-300: #fbbf24;
+  
+  --baunilha-50: #faf7f2;
+  --baunilha-100: #f4ece1;
+  --baunilha-200: #e8d9c5;
+  --baunilha-300: #d6be9f;
+  
+  --background: var(--baunilha-50);
+  --foreground: var(--cacau-950);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cacau-950: var(--cacau-950);
+  --color-cacau-900: var(--cacau-900);
+  --color-cacau-800: var(--cacau-800);
+  --color-cacau-700: var(--cacau-700);
+  --color-cacau-600: var(--cacau-600);
+  
+  --color-caramelo-500: var(--caramelo-500);
+  --color-caramelo-400: var(--caramelo-400);
+  --color-caramelo-300: var(--caramelo-300);
+  
+  --color-baunilha-50: var(--baunilha-50);
+  --color-baunilha-100: var(--baunilha-100);
+  --color-baunilha-200: var(--baunilha-200);
+  --color-baunilha-300: var(--baunilha-300);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #140b07;
+  --foreground: #f4ece1;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Regras obrigatórias de acessibilidade e contenção de scroll para modais e dialogs */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: rgba(18, 9, 5, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+/* Estilo para impressões de fichas de RPG */
+@media print {
+  header, nav, .no-print, button {
+    display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .print-page {
+    page-break-after: always;
+  }
 }
