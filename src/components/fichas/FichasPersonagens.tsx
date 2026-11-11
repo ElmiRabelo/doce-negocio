@@ -17,6 +17,8 @@ export const FichasPersonagens: React.FC = () => {
   const personagens = session?.personagens || [];
 
   const [modoCriacao, setModoCriacao] = useState<boolean>(false);
+  const [perfilVisualizado, setPerfilVisualizado] = useState<'resiliencia' | 'visao'>(perfil);
+  const [historiaExpandidaId, setHistoriaExpandidaId] = useState<string | null>(null);
   const [nomeJogador, setNomeJogador] = useState<string>('');
   const [nomePersonagem, setNomePersonagem] = useState<string>('');
   const [classeSelecionada, setClasseSelecionada] = useState<CharacterClass>('estrategista');
@@ -169,40 +171,85 @@ export const FichasPersonagens: React.FC = () => {
                 ))}
               </div>
 
-              {/* Painel Descritivo da Classe Selecionada */}
-              <div className="mt-3.5 rounded-2xl border-2 border-amber-400 bg-white p-4 shadow-sm dark:border-amber-700 dark:bg-stone-850 space-y-2.5">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-2 dark:border-stone-700">
-                  <div className="flex items-center gap-2">
-                    {getClasseIcone(classeDef.id)}
-                    <span className="font-black text-sm text-stone-900 dark:text-white">
-                      {classeDef.nome}
+              {/* Painel Descritivo da Classe com Cores Refinadas de Cacau & Confeitaria */}
+              <div className="mt-4 rounded-2xl border-2 border-[#8C5329] bg-[#FFFDF9] p-5 shadow-md dark:border-amber-600/70 dark:bg-[#1A0E08] space-y-3.5">
+                {/* Cabeçalho da Classe */}
+                <div className="flex flex-wrap items-center justify-between gap-2.5 border-b-2 border-[#DFCBB7] pb-3 dark:border-stone-800">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#3D2314] text-white shadow-sm border border-[#7A4927]">
+                      {getClasseIcone(classeDef.id)}
                     </span>
-                    <span className="rounded-md border border-amber-300 bg-amber-100 px-2 py-0.5 text-[11px] font-black uppercase text-amber-950 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
-                      Atributo-Chave: {classeDef.atributoChave.toUpperCase()}
+                    <div>
+                      <h4 className="font-black text-base text-[#1C0F07] dark:text-[#FFFDF8]">
+                        {classeDef.nome}
+                      </h4>
+                      <span className="text-xs font-bold text-[#633622] dark:text-amber-300">
+                        Papel: {classeDef.contribuicao}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-lg bg-[#2E180E] px-3 py-1 text-xs font-black uppercase text-[#F3E5D8] border border-[#693920] shadow-sm">
+                      Atributo-Chave: {classeDef.atributoChave.toUpperCase()} ★
                     </span>
                   </div>
-                  <span className="text-xs font-bold text-amber-900 dark:text-amber-300">
-                    Papel: {classeDef.contribuicao}
-                  </span>
                 </div>
 
-                <p className="text-xs sm:text-sm font-semibold text-stone-800 dark:text-stone-200 leading-relaxed">
+                {/* Resumo da Contribuição */}
+                <div className="rounded-xl bg-[#F6EFE6] p-3 text-xs sm:text-sm font-semibold text-[#2B160B] dark:bg-[#25150D] dark:text-[#F0E6DA] border border-[#E0D0BF] dark:border-stone-800 leading-relaxed">
                   {classeDef.descricao}
-                </p>
-
-                {/* Lore / Citação de acordo com o Perfil da Campanha */}
-                <div className="rounded-xl bg-amber-50/80 p-3 border border-amber-200 dark:bg-stone-900/70 dark:border-stone-700 text-xs">
-                  <span className="italic font-serif block text-stone-900 dark:text-amber-200 mb-1 font-medium">
-                    &ldquo;{perfil === 'visao' ? classeDef.fraseVisao : classeDef.fraseResiliencia}&rdquo;
-                  </span>
-                  <span className="text-stone-600 dark:text-stone-400 text-[11px] block leading-relaxed">
-                    {perfil === 'visao' ? classeDef.loreVisao : classeDef.loreResiliencia}
-                  </span>
                 </div>
 
-                <div className="rounded-xl border border-amber-300 bg-amber-100/80 p-2.5 text-xs text-amber-950 dark:bg-stone-800 dark:border-stone-700 dark:text-amber-200">
-                  <strong className="font-black uppercase tracking-wider">Habilidade Especial ({classeDef.habilidadeNome}):</strong>{' '}
-                  <span className="font-medium">{classeDef.habilidadeDescricao}</span>
+                {/* Aba de Seleção de Perfil para a História */}
+                <div className="rounded-xl border-2 border-[#C2824D]/60 bg-white p-3.5 dark:border-stone-800 dark:bg-[#150B06]">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5 border-b border-[#EADBCE] pb-2 dark:border-stone-800">
+                    <span className="text-xs font-black uppercase tracking-wider text-[#4A2612] dark:text-amber-200">
+                      História de Fundo do Personagem (do Manual Oficial):
+                    </span>
+                    <div className="flex items-center gap-1 text-xs font-bold">
+                      <button
+                        type="button"
+                        onClick={() => setPerfilVisualizado('resiliencia')}
+                        className={`rounded-lg px-2.5 py-1 transition ${
+                          perfilVisualizado === 'resiliencia'
+                            ? 'bg-[#633622] text-white font-black shadow-sm'
+                            : 'bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300'
+                        }`}
+                      >
+                        🌱 Resiliência
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPerfilVisualizado('visao')}
+                        className={`rounded-lg px-2.5 py-1 transition ${
+                          perfilVisualizado === 'visao'
+                            ? 'bg-[#633622] text-white font-black shadow-sm'
+                            : 'bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300'
+                        }`}
+                      >
+                        ✨ Visão
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Frase / Citação de Destaque */}
+                  <blockquote className="mb-2.5 rounded-lg border-l-4 border-amber-600 bg-[#FCFAF5] p-3 text-xs sm:text-sm italic font-serif text-[#1C0F07] dark:bg-[#1E120A] dark:text-amber-100 shadow-xs">
+                    &ldquo;{perfilVisualizado === 'visao' ? classeDef.fraseVisao : classeDef.fraseResiliencia}&rdquo;
+                  </blockquote>
+
+                  {/* História Completa Verbatim */}
+                  <p className="text-xs sm:text-[13px] leading-relaxed text-[#2E180E] dark:text-[#EDE3D8] font-normal font-sans">
+                    {perfilVisualizado === 'visao' ? classeDef.loreVisao : classeDef.loreResiliencia}
+                  </p>
+                </div>
+
+                {/* Habilidade Especial da Carta */}
+                <div className="rounded-xl border border-[#C29061] bg-[#FCF8F2] p-3 text-xs text-[#2E180E] dark:bg-[#201209] dark:border-[#7A4927] dark:text-[#F5EDE3]">
+                  <strong className="font-black uppercase tracking-wider text-[#8C4A1C] dark:text-amber-400 block mb-1">
+                    ★ Habilidade da Carta ({classeDef.habilidadeNome}):
+                  </strong>
+                  <span className="font-medium leading-relaxed">{classeDef.habilidadeDescricao}</span>
                 </div>
               </div>
             </div>
@@ -351,15 +398,40 @@ export const FichasPersonagens: React.FC = () => {
                     </button>
                   </div>
 
-                  {/* Descrição e Papel da Classe */}
-                  <div className="mb-3 rounded-xl border border-amber-200/90 bg-amber-50/60 p-3 text-xs dark:border-stone-800 dark:bg-stone-900/80">
-                    <p className="font-semibold text-stone-800 dark:text-stone-200 leading-relaxed mb-1.5">
+                  {/* Descrição, Papel e História da Classe com Cores Aprimoradas */}
+                  <div className="mb-3 rounded-2xl border-2 border-[#8C5329]/60 bg-[#FFFDF9] p-3.5 text-xs shadow-sm dark:border-amber-700/60 dark:bg-[#180E08]">
+                    <div className="flex flex-wrap items-center justify-between gap-1.5 border-b border-[#E8D9CA] pb-2 mb-2 dark:border-stone-800">
+                      <span className="font-bold text-[#5A3119] dark:text-amber-300">
+                        Papel: {def.contribuicao}
+                      </span>
+                      <span className="rounded-md bg-[#381F10] text-[#F3E5D8] px-2 py-0.5 text-[10px] font-black uppercase">
+                        Chave: {def.atributoChave.toUpperCase()} ★
+                      </span>
+                    </div>
+
+                    <p className="font-semibold text-[#241308] dark:text-[#F3ECE1] leading-relaxed mb-2">
                       {def.descricao}
                     </p>
-                    <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-bold text-amber-900 dark:text-amber-300 border-t border-amber-200/70 pt-1.5 dark:border-stone-800">
-                      <span>Papel: {def.contribuicao}</span>
-                      <span className="italic font-serif">&ldquo;{perfil === 'visao' ? def.fraseVisao : def.fraseResiliencia}&rdquo;</span>
-                    </div>
+
+                    <blockquote className="rounded-lg border-l-4 border-amber-600 bg-[#FBF7F0] p-2.5 text-xs italic font-serif text-[#1C0F07] dark:bg-[#1F120A] dark:text-amber-100 mb-2">
+                      &ldquo;{perfil === 'visao' ? def.fraseVisao : def.fraseResiliencia}&rdquo;
+                    </blockquote>
+
+                    {/* Botão para ver a narrativa completa do livro */}
+                    <button
+                      type="button"
+                      onClick={() => setHistoriaExpandidaId(historiaExpandidaId === p.id ? null : p.id)}
+                      className="text-[11px] font-black uppercase tracking-wider text-amber-800 hover:text-amber-600 dark:text-amber-400 flex items-center gap-1 transition"
+                    >
+                      <span>{historiaExpandidaId === p.id ? '▲ Ocultar História Oficial' : '▼ Ler História Oficial do Manual'}</span>
+                      <span className="text-[10px] opacity-75 font-normal lowercase">({perfil === 'visao' ? 'Perfil Visão' : 'Perfil Resiliência'})</span>
+                    </button>
+
+                    {historiaExpandidaId === p.id && (
+                      <div className="mt-2.5 rounded-xl bg-[#F6ECE0] p-3 border border-[#DECABA] dark:bg-[#22130A] dark:border-stone-800 text-[12px] leading-relaxed text-[#2C170B] dark:text-[#E8DDD2] font-normal">
+                        {perfil === 'visao' ? def.loreVisao : def.loreResiliencia}
+                      </div>
+                    )}
                   </div>
 
                   {/* Tabela de Atributos com Alto Contraste */}

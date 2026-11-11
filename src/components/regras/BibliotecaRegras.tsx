@@ -165,40 +165,56 @@ export const BibliotecaRegras: React.FC = () => {
           {CLASSES_DOCE_NEGOCIO.map((c) => (
             <div
               key={c.id}
-              className="rounded-2xl border-2 border-[#C2824D] bg-white p-5 shadow-sm dark:border-stone-800 dark:bg-[#1B110A] text-xs flex flex-col justify-between"
+              className="rounded-2xl border-2 border-[#8C5329] bg-[#FFFDF9] p-5 shadow-sm dark:border-amber-600/70 dark:bg-[#1A0E08] text-xs flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between border-b-2 border-amber-200 pb-2.5 mb-2.5 dark:border-stone-800">
-                  <h3 className="font-black text-base text-stone-900 dark:text-white">{c.nome}</h3>
-                  <span className="rounded-md border border-amber-300 bg-amber-100 px-2 py-0.5 font-black text-amber-950 text-[11px] uppercase dark:bg-amber-950 dark:text-amber-200 dark:border-amber-700">
-                    Atributo: {c.atributoChave.toUpperCase()}
+                <div className="flex items-center justify-between border-b-2 border-[#DFCBB7] pb-2.5 mb-2.5 dark:border-stone-800">
+                  <h3 className="font-black text-base text-[#1C0F07] dark:text-[#FFFDF8]">{c.nome}</h3>
+                  <span className="rounded-md bg-[#2E180E] text-[#F3E5D8] px-2 py-0.5 font-black text-[11px] uppercase border border-[#693920]">
+                    Atributo: {c.atributoChave.toUpperCase()} ★
                   </span>
                 </div>
 
-                <p className="text-xs font-semibold text-stone-800 dark:text-stone-200 mb-2 leading-relaxed">
+                <div className="rounded-xl bg-[#F6EFE6] p-2.5 text-xs font-semibold text-[#2B160B] dark:bg-[#25150D] dark:text-[#F0E6DA] border border-[#E0D0BF] dark:border-stone-800 leading-relaxed mb-2.5">
                   {c.descricao}
+                </div>
+
+                <p className="text-[#5A3119] dark:text-amber-300 font-bold mb-2.5 text-xs">
+                  Papel no Negócio: <span className="font-medium text-[#1C0F07] dark:text-[#EDE3D8]">{c.contribuicao}</span>
                 </p>
 
-                <p className="text-stone-700 dark:text-stone-300 font-semibold mb-2.5 text-xs">
-                  <strong className="text-stone-900 dark:text-white">Papel no Negócio:</strong> {c.contribuicao}
-                </p>
-
-                <div className="mb-2.5 space-y-1.5 rounded-xl bg-amber-50/70 p-2.5 border border-amber-200 dark:bg-stone-900 dark:border-stone-800 text-[11px]">
+                {/* Histórias Oficiais nos Dois Perfis */}
+                <div className="mb-3 space-y-2 rounded-xl border border-[#DECABA] bg-white p-3 dark:border-stone-800 dark:bg-[#150B06]">
                   <div>
-                    <span className="font-bold text-amber-900 dark:text-amber-300">🌱 Resiliência: </span>
-                    <span className="italic font-serif">&ldquo;{c.fraseResiliencia}&rdquo;</span>
+                    <span className="font-black text-[11px] uppercase text-[#633622] dark:text-amber-300 block mb-0.5">
+                      🌱 Perfil Resiliência:
+                    </span>
+                    <blockquote className="italic font-serif text-[11px] text-[#1C0F07] dark:text-amber-100 mb-1 border-l-2 border-amber-600 pl-2">
+                      &ldquo;{c.fraseResiliencia}&rdquo;
+                    </blockquote>
+                    <p className="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                      {c.loreResiliencia}
+                    </p>
                   </div>
-                  <div>
-                    <span className="font-bold text-amber-900 dark:text-amber-300">✨ Visão: </span>
-                    <span className="italic font-serif">&ldquo;{c.fraseVisao}&rdquo;</span>
+
+                  <div className="border-t border-[#EADBCE] pt-2 dark:border-stone-800">
+                    <span className="font-black text-[11px] uppercase text-[#633622] dark:text-amber-300 block mb-0.5">
+                      ✨ Perfil Visão:
+                    </span>
+                    <blockquote className="italic font-serif text-[11px] text-[#1C0F07] dark:text-amber-100 mb-1 border-l-2 border-amber-600 pl-2">
+                      &ldquo;{c.fraseVisao}&rdquo;
+                    </blockquote>
+                    <p className="text-[11px] text-stone-600 dark:text-stone-400 leading-relaxed">
+                      {c.loreVisao}
+                    </p>
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-amber-100/80 p-3 border-2 border-amber-300 text-stone-900 dark:bg-stone-800 dark:border-stone-700 dark:text-stone-100">
-                  <span className="font-black text-amber-950 dark:text-amber-200 block mb-1 uppercase tracking-wide">
+                <div className="rounded-xl border border-[#C29061] bg-[#FCF8F2] p-3 text-xs text-[#2E180E] dark:bg-[#201209] dark:border-[#7A4927] dark:text-[#F5EDE3]">
+                  <span className="font-black text-[#8C4A1C] dark:text-amber-400 block mb-1 uppercase tracking-wide">
                     Habilidade da Carta: {c.habilidadeNome}
                   </span>
-                  <span className="font-medium text-xs leading-relaxed">{c.habilidadeDescricao}</span>
+                  <span className="font-medium leading-relaxed">{c.habilidadeDescricao}</span>
                 </div>
               </div>
             </div>

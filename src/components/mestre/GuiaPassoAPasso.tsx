@@ -43,6 +43,7 @@ export const GuiaPassoAPasso: React.FC = () => {
 
   const session = getActiveSession();
   const etapaAtual = session?.etapaAtual || 1;
+  const perfil = session?.perfil || 'resiliencia';
 
   // Estados locais para checklists da etapa 1
   const [checklist1, setChecklist1] = useState<{ [k: string]: boolean }>({
@@ -54,6 +55,7 @@ export const GuiaPassoAPasso: React.FC = () => {
   });
 
   const [classeExpandidaGuia, setClasseExpandidaGuia] = useState<string | null>('estrategista');
+  const [perfilVisualizadoGuia, setPerfilVisualizadoGuia] = useState<'resiliencia' | 'visao'>(perfil);
 
   const getClasseIconeGuia = (id: string) => {
     switch (id) {
@@ -74,7 +76,7 @@ export const GuiaPassoAPasso: React.FC = () => {
     );
   }
 
-  const { perfil, kit, indicadores, produtosEscolhidos } = session;
+  const { kit, indicadores, produtosEscolhidos } = session;
 
   const toggleChecklist = (key: string) => {
     setChecklist1((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -407,42 +409,81 @@ export const GuiaPassoAPasso: React.FC = () => {
                 })}
               </div>
 
-              {/* Detalhe da classe selecionada com descrição completa e lore */}
+              {/* Detalhe da classe selecionada com cores refinadas de cacau e história completa */}
               {(() => {
                 const c = CLASSES_DOCE_NEGOCIO.find((item) => item.id === (classeExpandidaGuia || 'estrategista'))!;
                 return (
-                  <div className="rounded-xl border-2 border-amber-300 bg-amber-50/70 p-4 dark:border-stone-700 dark:bg-stone-900/90 space-y-2.5 text-xs">
-                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 pb-2 dark:border-stone-800">
-                      <div className="flex items-center gap-2">
-                        {getClasseIconeGuia(c.id)}
-                        <span className="font-black text-sm text-stone-900 dark:text-white">
-                          {c.nome}
+                  <div className="rounded-2xl border-2 border-[#8C5329] bg-[#FFFDF9] p-4.5 dark:border-amber-600/70 dark:bg-[#1A0E08] space-y-3.5 text-xs shadow-md">
+                    <div className="flex flex-wrap items-center justify-between gap-2.5 border-b-2 border-[#DFCBB7] pb-2.5 dark:border-stone-800">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#3D2314] text-white shadow-sm border border-[#7A4927]">
+                          {getClasseIconeGuia(c.id)}
                         </span>
-                        <span className="rounded-md border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase text-amber-950 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
-                          Atributo-Chave: {c.atributoChave.toUpperCase()}
-                        </span>
+                        <div>
+                          <h4 className="font-black text-base text-[#1C0F07] dark:text-[#FFFDF8]">
+                            {c.nome}
+                          </h4>
+                          <span className="text-xs font-bold text-[#633622] dark:text-amber-300">
+                            Papel: {c.contribuicao}
+                          </span>
+                        </div>
                       </div>
-                      <span className="font-bold text-amber-900 dark:text-amber-300">
-                        Papel: {c.contribuicao}
+
+                      <span className="rounded-lg bg-[#2E180E] px-3 py-1 text-xs font-black uppercase text-[#F3E5D8] border border-[#693920] shadow-sm">
+                        Atributo-Chave: {c.atributoChave.toUpperCase()} ★
                       </span>
                     </div>
 
-                    <p className="text-stone-800 dark:text-stone-200 font-semibold text-xs sm:text-sm leading-relaxed">
+                    <div className="rounded-xl bg-[#F6EFE6] p-3 text-xs sm:text-sm font-semibold text-[#2B160B] dark:bg-[#25150D] dark:text-[#F0E6DA] border border-[#E0D0BF] dark:border-stone-800 leading-relaxed">
                       {c.descricao}
-                    </p>
-
-                    <div className="rounded-lg bg-white p-3 border border-amber-200 dark:bg-stone-800 dark:border-stone-700">
-                      <span className="italic font-serif block text-stone-900 dark:text-amber-200 font-medium mb-1">
-                        &ldquo;{perfil === 'visao' ? c.fraseVisao : c.fraseResiliencia}&rdquo;
-                      </span>
-                      <span className="text-[11px] text-stone-600 dark:text-stone-400 block leading-relaxed">
-                        {perfil === 'visao' ? c.loreVisao : c.loreResiliencia}
-                      </span>
                     </div>
 
-                    <div className="rounded-lg border border-amber-300 bg-amber-100/70 p-2.5 text-amber-950 dark:bg-stone-800 dark:border-stone-700 dark:text-amber-200">
-                      <strong className="font-black uppercase tracking-wider">Habilidade Especial ({c.habilidadeNome}):</strong>{' '}
-                      <span className="font-medium">{c.habilidadeDescricao}</span>
+                    {/* Caixa da História com Seletor de Perfil */}
+                    <div className="rounded-xl border-2 border-[#C2824D]/60 bg-white p-3.5 dark:border-stone-800 dark:bg-[#150B06]">
+                      <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5 border-b border-[#EADBCE] pb-2 dark:border-stone-800">
+                        <span className="text-xs font-black uppercase tracking-wider text-[#4A2612] dark:text-amber-200">
+                          História de Fundo do Personagem (do Manual Oficial):
+                        </span>
+                        <div className="flex items-center gap-1 text-xs font-bold">
+                          <button
+                            type="button"
+                            onClick={() => setPerfilVisualizadoGuia('resiliencia')}
+                            className={`rounded-lg px-2.5 py-1 transition ${
+                              perfilVisualizadoGuia === 'resiliencia'
+                                ? 'bg-[#633622] text-white font-black shadow-sm'
+                                : 'bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300'
+                            }`}
+                          >
+                            🌱 Resiliência
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPerfilVisualizadoGuia('visao')}
+                            className={`rounded-lg px-2.5 py-1 transition ${
+                              perfilVisualizadoGuia === 'visao'
+                                ? 'bg-[#633622] text-white font-black shadow-sm'
+                                : 'bg-stone-100 text-stone-700 hover:bg-stone-200 dark:bg-stone-800 dark:text-stone-300'
+                            }`}
+                          >
+                            ✨ Visão
+                          </button>
+                        </div>
+                      </div>
+
+                      <blockquote className="mb-2.5 rounded-lg border-l-4 border-amber-600 bg-[#FCFAF5] p-3 text-xs sm:text-sm italic font-serif text-[#1C0F07] dark:bg-[#1E120A] dark:text-amber-100 shadow-xs">
+                        &ldquo;{perfilVisualizadoGuia === 'visao' ? c.fraseVisao : c.fraseResiliencia}&rdquo;
+                      </blockquote>
+
+                      <p className="text-xs sm:text-[13px] leading-relaxed text-[#2E180E] dark:text-[#EDE3D8] font-normal font-sans">
+                        {perfilVisualizadoGuia === 'visao' ? c.loreVisao : c.loreResiliencia}
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-[#C29061] bg-[#FCF8F2] p-3 text-xs text-[#2E180E] dark:bg-[#201209] dark:border-[#7A4927] dark:text-[#F5EDE3]">
+                      <strong className="font-black uppercase tracking-wider text-[#8C4A1C] dark:text-amber-400 block mb-1">
+                        ★ Habilidade Especial ({c.habilidadeNome}):
+                      </strong>
+                      <span className="font-medium leading-relaxed">{c.habilidadeDescricao}</span>
                     </div>
                   </div>
                 );
